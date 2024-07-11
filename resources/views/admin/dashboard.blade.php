@@ -9,7 +9,7 @@
                 <div class="card card-mini dash-card card-1">
                     <div class="card-body">
                         <h2 class="mb-1">1,503</h2>
-                        <p>Daily Signups</p>
+                        <p>clients Journaliers</p>
                         <span class="mdi mdi-account-arrow-left"></span>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                 <div class="card card-mini dash-card card-2">
                     <div class="card-body">
                         <h2 class="mb-1">79,503</h2>
-                        <p>Daily Visitors</p>
+                        <p>Fond de caisse</p>
                         <span class="mdi mdi-account-clock"></span>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="card card-mini dash-card card-3">
                     <div class="card-body">
                         <h2 class="mb-1">15,503</h2>
-                        <p>Daily Order</p>
+                        <p>Ventes journaliers</p>
                         <span class="mdi mdi-package-variant"></span>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 <div class="card card-mini dash-card card-4">
                     <div class="card-body">
                         <h2 class="mb-1">$98,503</h2>
-                        <p>Daily Revenue</p>
+                        <p>Revenue Journalier</p>
                         <span class="mdi mdi-currency-usd"></span>
                     </div>
                 </div>

@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
-        // $middleware->append(Admin::class);
+        // $middleware->prepend(Admin::class);
+        
      
     })
     ->withExceptions(function (Exceptions $exceptions) {

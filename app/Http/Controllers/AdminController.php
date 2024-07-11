@@ -25,11 +25,8 @@ class AdminController extends Controller
 
         if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->password,'status'=>'actif'])){
             return redirect()->route('admin.dashboard')->with('success','Bienvenue');
-            return dd('hello admin');
         }else{
-            return dd('hello back admin');
-
-            // return back()->withInput($request->only('email'));
+            return back()->withInput($request->only('email'));
         }
     }
 
