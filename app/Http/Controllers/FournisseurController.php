@@ -79,8 +79,22 @@ class FournisseurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Fournisseur $fournisseur)
+    public function destroy($id)
     {
         //
+        $fournisseur_delete = Fournisseur::find($id);
+
+        // return dd($fournisseur_delete);
+        if($fournisseur_delete){
+            $status = $fournisseur_delete->delete();
+            if($status){
+                return redirect()->route('admin.fournisseur')->with('success','suppression du fournisseur');
+            }else{
+                return redirect()->route('admin.fournisseur')->with('error','Erreur lors de la suppression du fournisseur');
+            }
+
+        }else{
+            return back()->with('error','fournisseur non trouvé');
+        };
     }
 }

@@ -57,9 +57,14 @@
 									<button type="button" class="btn-edit-icon mr-3" title="modifier" data-bs-dismiss="modal" aria-label="Close">
 										<i class="mdi mdi-pencil"></i>
 									</button>
-									<button type="button" class="btn-delete-icon mr-3" title="supprimer" data-bs-dismiss="modal" aria-label="Close">
-										<i class="mdi mdi-delete-forever"></i>
-									</button>
+                                    <form action="{{route('admin.delete.fournisseur',$fournisseur->id)}}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="button" class="btn-delete-icon mr-3" title="supprimer" data-bs-dismiss="modal" data-id="{{$fournisseur->id}}" aria-label="Close">
+                                            <i class="mdi mdi-delete-forever"></i>
+                                        </button>
+                                    </form>
+									
 									<button type="button" class="btn-close-icon" title="fermer" data-bs-dismiss="modal" aria-label="Close">
 										<i class="mdi mdi-close"></i>
 									</button>
@@ -203,14 +208,45 @@
         </div> <!-- End Content -->
     </div> <!-- End Content Wrapper -->
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var coverImage = document.getElementById('coverImage');
-            coverImage.addEventListener('change', function() {
-                var fileName = this.files[0].name;
-                var nextSibling = this.nextElementSibling;
-                nextSibling.innerText = fileName;
-            });
+@endsection
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var coverImage = document.getElementById('coverImage');
+        coverImage.addEventListener('change', function() {
+            var fileName = this.files[0].name;
+            var nextSibling = this.nextElementSibling;
+            nextSibling.innerText = fileName;
         });
-    </script>
+    });
+</script>
+ <script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+$('.btn-delete-icon').click(function (e) {
+    var form = $(this).closest('form');
+    var dataID = $(this).data('id');
+    e.preventDefault();
+    swal({
+        title: "êtes vous sure?",
+        text: "OUne fois supprimé,vous ne pouvez plus recuperer le fichier!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                form.submit();
+                swal("Poof! le fournisseur à été supprimé!", {
+                    icon: "success",
+                });
+            } else {
+                swal("Suppression annulée");
+            }
+        });
+});
+</script>
 @endsection

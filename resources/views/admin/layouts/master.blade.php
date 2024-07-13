@@ -1013,12 +1013,14 @@
     <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('js/date-range.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!-- Option Switcher -->
     <script src="{{ asset('plugins/options-sidebar/optionswitcher.js') }}"></script>
 
     <!-- Ekka Custom -->
     <script src="{{ asset('js/ekka.js') }}"></script>
+    @yield('script');
 </body>
 
 
