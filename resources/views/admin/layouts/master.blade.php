@@ -136,8 +136,8 @@
                             <div class="collapse">
                                 <ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
                                     <li class="">
-                                        <a class="sidenav-item-link" href="main-category.html">
-                                            <span class="nav-text">Main Category</span>
+                                        <a class="sidenav-item-link" href="{{route('categories.index')}}">
+                                            <span class="nav-text">Catégorie principale</span>
                                         </a>
                                     </li>
                                     <li class="">
