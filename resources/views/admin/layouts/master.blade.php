@@ -8,9 +8,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Ekka - Admin Dashboard eCommerce HTML Template.">
+    <meta name="description" content="leMarchand - Admin Dashboard Gestion HTML Template.">
 
-    <title>Ekka - Admin Dashboard eCommerce HTML Template.</title>
+    <title>Le Marchand - Admin Dashboard Store Gestion</title>
 
     <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="../../../../../fonts.googleapis.com/index.html">
@@ -24,8 +24,7 @@
 
     <!-- PLUGINS CSS STYLE -->
     <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/simplebar/simplebar.css" rel="stylesheet') }}" />
-
+    <link href="{{asset('plugins/simplebar/simplebar.css')}}" rel="stylesheet" />
     <!-- Ekka CSS -->
     <link id="ekka-css" href="{{ asset('css/ekka.css') }}" rel="stylesheet" />
 
@@ -85,15 +84,15 @@
 									</li> --}}
 
                                     <li class="">
-                                        <a class="sidenav-item-link" href="user-list.html">
+                                        <a class="sidenav-item-link" href="{{route('clients.index')}}">
                                             <span class="nav-text">Liste des clients</span>
                                         </a>
                                     </li>
-                                    <li class="">
+                                    {{-- <li class="">
                                         <a class="sidenav-item-link" href="user-profile.html">
                                             <span class="nav-text">Users Profile</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                             <hr>
@@ -137,12 +136,12 @@
                                 <ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
                                     <li class="">
                                         <a class="sidenav-item-link" href="{{route('categories.index')}}">
-                                            <span class="nav-text">Catégorie principale</span>
+                                            <span class="nav-text">Catégorie</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a class="sidenav-item-link" href="sub-category.html">
-                                            <span class="nav-text">Sub Category</span>
+                                        <a class="sidenav-item-link" href="{{route('admin.categorie.subCategory')}}">
+                                            <span class="nav-text">Sous Categorie</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -985,7 +984,7 @@
                 <div class="copyright bg-white">
                     <p>
                         Copyright &copy; <span id="ec-year"></span><a class="text-primary"
-                            href="https://themeforest.net/user/ashishmaraviya" target="_blank"> Ekka Admin
+                            href="https://themeforest.net/user/ashishmaraviya" target="_blank"> LeMArchand Admin
                             Dashboard</a>. All Rights Reserved.
                     </p>
                 </div>

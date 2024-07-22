@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Models\Category;
-use App\Models\SubCategory;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManager;
 
-class CategoryController extends Controller
+class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +14,8 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::all();
-        return view('admin.categories.index',compact('categories'));
+        $clients = Client::all();
+        return view('admin.clients.index',compact('clients'));
     }
 
     /**
@@ -28,18 +26,11 @@ class CategoryController extends Controller
         //
     }
 
-    public function subCategory(){
-        $categories = Category::all();
-        $subcategories = SubCategory::with('categorie')->get();
-        return view('admin.categories.sous_category',compact('categories','subcategories'));
-    }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
-
         $data = $request->all();
         if($request->has('photo')){
             $destination_path = 'public';
@@ -50,27 +41,28 @@ class CategoryController extends Controller
             $photo->save(storage_path('app/' . $destination_path . '/' . $file_name));
             $data['photo']= $file_name;
         }
-        $status = Category::create($data);
+        $status = Client::create($data);
         if ($status) {
-            return redirect()->route('categories.index')->with('success','Categorie crée');
+            return redirect()->route('clients.index')->with('success','Client crée');
         } else {
-            return redirect()->route('categories.index')->with('error','Erreur lors de la creation de la catégorie');
+            return redirect()->route('clients.index')->with('error','Erreur lors de la creation de la client');
         }
-        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
         //
+        $client = Client::find($id);
+        return view('admin.clients.details',compact('client'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Client $client)
     {
         //
     }
@@ -78,7 +70,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Client $client)
     {
         //
     }
@@ -86,7 +78,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Client $client)
     {
         //
     }

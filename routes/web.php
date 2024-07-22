@@ -17,7 +17,13 @@ Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'dashboard
 Route::get('/fournisseurs',[\App\Http\Controllers\FournisseurController::class,'index'])->name('admin.fournisseur');
 Route::post('/save/fournisseur',[\App\Http\Controllers\FournisseurController::class,'store'])->name('admin.save.fournisseur');
 Route::delete('/delete/fournisseur/{id}',[\App\Http\Controllers\FournisseurController::class,'destroy'])->name('admin.delete.fournisseur');
+Route::get('/categories/sous-categorie',[\App\Http\Controllers\CategoryController::class,'subCategory'])->name('admin.categorie.subCategory');
 Route::resource('/categories',App\Http\Controllers\CategoryController::class);
+Route::resource('/subCategory',App\Http\Controllers\SubCategoryController::class);
+
+Route::resource('/clients',App\Http\Controllers\ClientController::class);
+
+
 
 });
 
