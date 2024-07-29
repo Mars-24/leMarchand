@@ -157,13 +157,13 @@
                             <div class="collapse">
                                 <ul class="sub-menu" id="products" data-parent="#sidebar-menu">
                                     <li class="">
-                                        <a class="sidenav-item-link" href="product-add.html">
-                                            <span class="nav-text">Ajouter Produit</span>
+                                        <a class="sidenav-item-link" href="{{route('produits.index')}}">
+                                            <span class="nav-text">Liste des Produits</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a class="sidenav-item-link" href="product-list.html">
-                                            <span class="nav-text">Liste des Produits</span>
+                                        <a class="sidenav-item-link" href="{{route('produits.create')}}">
+                                            <span class="nav-text">Ajouter Produit</span>
                                         </a>
                                     </li>
                                     <li class="">

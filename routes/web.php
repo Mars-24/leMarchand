@@ -20,8 +20,9 @@ Route::delete('/delete/fournisseur/{id}',[\App\Http\Controllers\FournisseurContr
 Route::get('/categories/sous-categorie',[\App\Http\Controllers\CategoryController::class,'subCategory'])->name('admin.categorie.subCategory');
 Route::resource('/categories',App\Http\Controllers\CategoryController::class);
 Route::resource('/subCategory',App\Http\Controllers\SubCategoryController::class);
-
 Route::resource('/clients',App\Http\Controllers\ClientController::class);
+Route::resource('/produits',\App\Http\Controllers\ProduitController::class);
+
 
 
 

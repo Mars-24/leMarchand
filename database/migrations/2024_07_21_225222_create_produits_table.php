@@ -14,15 +14,18 @@ return new class extends Migration
         Schema::create('produits', function (Blueprint $table) {
             $table->id();
             $table->string('model');
+            $table->string('photo')->nullable();
             $table->double('prix_achat')->default(0);
             $table->double('prix_vente')->default(0);
+            $table->double('prix_minimum')->default(0);
             $table->integer('quantite')->default(0);
             $table->integer('garantie');
-            $table->enun('status',['en_stock', 'vendu', 'reserve','reparation','deal']);
+            $table->enum('status',['en_stock', 'vendu', 'reserve','reparation','deal']);
+            $table->string('code_bar')->unique()->nullable();
             $table->unsignedBigInteger('fournisseur_id');
             $table->unsignedBigInteger('subcategory_id');
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs')->onDelete('cascade');
-            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
+            $table->foreign('subcategory_id')->references('id')->on('sub_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
