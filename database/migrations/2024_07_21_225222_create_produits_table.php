@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('prix_achat')->default(0);
             $table->double('prix_vente')->default(0);
             $table->double('prix_minimum')->default(0);
-            $table->integer('quantite')->default(0);
+            $table->integer('quantite')->default(1);
             $table->integer('garantie');
             $table->enum('status',['en_stock', 'vendu', 'reserve','reparation','deal']);
             $table->string('code_bar')->unique()->nullable();

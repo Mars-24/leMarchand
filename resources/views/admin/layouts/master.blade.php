@@ -18,7 +18,6 @@
     <link
         href="{{ asset('fonts.googleapis.com/css21b01.css?family=Montserrat:wght@200;300;400;500;600;700;800&amp;family=Poppins:wght@300;400;500;600;700;800;900&amp;family=Roboto:wght@400;500;700;900&amp;display=swap') }}"
         rel="stylesheet">
-
     <link href="{{ asset('cdn.jsdelivr.net/npm/%40mdi/font%404.4.95/css/materialdesignicons.min.css') }}"
         rel="stylesheet" />
 
@@ -166,16 +165,6 @@
                                             <span class="nav-text">Ajouter Produit</span>
                                         </a>
                                     </li>
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="product-grid.html">
-                                            <span class="nav-text">Grid Product</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="product-detail.html">
-                                            <span class="nav-text">Detail Produiit</span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -189,8 +178,8 @@
                             <div class="collapse">
                                 <ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
                                     <li class="">
-                                        <a class="sidenav-item-link" href="new-order.html">
-                                            <span class="nav-text">New Order</span>
+                                        <a class="sidenav-item-link" href="{{route('factures.index')}}">
+                                            <span class="nav-text">Factures</span>
                                         </a>
                                     </li>
                                     <li class="">
@@ -392,7 +381,7 @@
                                         </a>
                                     </li>
                                     <li class="dropdown-footer">
-                                        <a href="index.html"> <i class="mdi mdi-logout"></i> Deconnexion </a>
+                                        <a href="{{ route('logout.admin') }}"> <i class="mdi mdi-logout"></i> Deconnexion </a>
                                     </li>
                                 </ul>
                             </li>

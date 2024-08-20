@@ -11,6 +11,8 @@ Auth::routes(['register' => false, 'login' => false]);
 
 Route::get('/',[\App\Http\Controllers\AdminController::class,'index'])->name('admin.connexion');
 Route::post('/login',[\App\Http\Controllers\AdminController::class,'login'])->name('admin.login');
+Route::get('/logout',[\App\Http\Controllers\AdminController::class,'logout'])->name('logout.admin');
+
 
 Route::group(['prefix' => 'admin', 'middleware' => [Admin::class]], function () {
 Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'dashboard'])->name('admin.dashboard');
@@ -21,7 +23,16 @@ Route::get('/categories/sous-categorie',[\App\Http\Controllers\CategoryControlle
 Route::resource('/categories',App\Http\Controllers\CategoryController::class);
 Route::resource('/subCategory',App\Http\Controllers\SubCategoryController::class);
 Route::resource('/clients',App\Http\Controllers\ClientController::class);
+Route::get('/client/search',[App\Http\Controllers\ClientController::class,'findClient'])->name('client-info');
+
 Route::resource('/produits',\App\Http\Controllers\ProduitController::class);
+Route::resource('/factures',\App\Http\Controllers\OrderController::class);
+Route::post('/factures/add',[\App\Http\Controllers\OrderController::class,'cartStore'])->name('cart.store');
+Route::post('/factures/delete',[\App\Http\Controllers\OrderController::class,'cartDelete'])->name('cart.delete');
+
+Route::post('/factures/update',[\App\Http\Controllers\OrderController::class,'cartUpdate'])->name('cart.update');
+
+
 
 
 

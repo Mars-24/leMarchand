@@ -18,7 +18,7 @@ class ProduitController extends Controller
     public function index()
     {
         //
-        $produits = Produit::all();
+        $produits = Produit::with('fournisseur')->with('subcategory')->get();
         return view('admin.produits.index',compact('produits'));
     }
 
@@ -68,14 +68,14 @@ class ProduitController extends Controller
                 $photo_name = $file->getClientOriginalName();
                 $image = ImageManager::imagick()->read($file);
                 $photo = $image->resize(640,640);
-                $photo->save(storage_path('app/' . $destination_path . '/' . $file_name));
+                $photo->save(storage_path('app/' . $destination_path . '/' . $photo_name));
             }
             $data['photo']=$photo_name;
             do {
-                $code_unique = Str::random(10); // Génère un code aléatoire de 10 caractères
-            } while (Produit::where('code_unique', $code_unique)->exists()); // Assure l'unicité du code
+                $code_bar = Str::random(10); // Génère un code aléatoire de 10 caractères
+            } while (Produit::where('code_bar', $code_bar)->exists()); // Assure l'unicité du code
         
-            $data['code_unique'] = $code_unique;
+            $data['code_bar'] = $code_bar;
             // return dd($data);
             $statusProduct =Produit::create($data);
             if ($statusProduct) {
@@ -88,15 +88,39 @@ class ProduitController extends Controller
             return redirect()->back()->with('error','Erreur lors de l enregistrement du produit');
         }
            
+        }else{
+            if ($request->has('file')) {
+                $destination_path = 'public';
+                $file = $request->file('file');  
+                $photo_name = $file->getClientOriginalName();
+                $image = ImageManager::imagick()->read($file);
+                $photo = $image->resize(640,640);
+                $photo->save(storage_path('app/' . $destination_path . '/' . $photo_name));
+            }
+            $data['photo']=$photo_name;
+            do {
+                $code_bar = Str::random(10); // Génère un code aléatoire de 10 caractères
+            } while (Produit::where('code_bar', $code_bar)->exists()); // Assure l'unicité du code
+        
+            $data['code_bar'] = $code_bar; 
+            $statusProduct =Produit::create($data);
+            if ($statusProduct) {
+                return redirect()->route('produits.index')->with('success','Produit Enregistrer');
+            } else {
+                return redirect()->back()->with('error','Erreur lors de l enregistrement du produit');
+            }
+            
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Produit $produit)
+    public function show($id)
     {
         //
+        $produit = Produit::with('fournisseur')->findOrFail($id);
+        return view('admin.produits.detail',compact('produit'));
     }
 
     /**
@@ -118,8 +142,20 @@ class ProduitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produit $produit)
+    public function destroy($id)
     {
         //
+        $produit = Produit::find($id);
+        if ($produit) {
+            $status=$produit->delete();
+            if ($status) {
+                return redirect()->route('produits.index')->with('success','suppression du produit');
+            } else {
+                return redirect()->route('produits.index')->with('error','Erreur lors de la suppression du produit');
+            }
+            
+        }else{
+            return back()->with('error','produit non trouvé');
+        };
     }
 }

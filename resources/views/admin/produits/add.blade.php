@@ -89,10 +89,6 @@
                                                         )</span></label>
                                                 <input type="number" class="form-control" id="price3" name="prix_minimum">
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Quantité</label>
-                                                <input type="number" class="form-control" id="quantity1" name="quantite">
-                                            </div>
 											<div class="col-md-6">
                                                 <label class="form-label">Ganrantie <span>(En Année)</span> </label>
                                                 <input type="number" class="form-control" id="garantie1" name="garantie">

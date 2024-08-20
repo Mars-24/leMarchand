@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -29,7 +30,17 @@ class AdminController extends Controller
             return back()->withInput($request->only('email'));
         }
     }
+    public function logout(Request $request)
+    {
+        Session::forget('user');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()
+            ->route('admin.connexion')
+            ->with('success', 'Deconnexion reussie');
+    }
     public function dashboard()
     {
 

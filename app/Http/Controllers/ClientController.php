@@ -67,6 +67,20 @@ class ClientController extends Controller
         //
     }
 
+    public function findClient(Request $request){
+            // Récupérer la valeur saisie par l'utilisateur
+    $client = Client::where('nom', 'like', $request->input('nom') . '%')->first();
+
+    if ($client) {
+        return response()->json([
+            'exists' => true,
+            'prenoms' => $client->prenoms,
+            'email' => $client->email,
+            'phone' => $client->telephone,
+        ]);
+    } 
+    }
+
     /**
      * Update the specified resource in storage.
      */

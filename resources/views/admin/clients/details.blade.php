@@ -93,7 +93,7 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="settings-tab" data-bs-toggle="tab"
                                     data-bs-target="#settings" type="button" role="tab"
-                                    aria-controls="settings" aria-selected="false">Settings</button>
+                                    aria-controls="settings" aria-selected="false">Parametre</button>
                             </li>
                         </ul>
                         <div class="tab-content px-3 px-xl-5" id="myTabContent">
