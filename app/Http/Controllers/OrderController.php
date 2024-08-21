@@ -97,6 +97,13 @@ class OrderController extends Controller
         }
         return $response;
     }
+
+    public function paiementView(){
+        return view('admin.layouts._facture-list');
+    }
+    public function dealView(){
+        return view('admin.layouts._deal-facture-list');
+    }
     /**
      * Show the form for creating a new resource.
      */

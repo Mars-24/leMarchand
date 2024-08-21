@@ -22,7 +22,6 @@
                                             <th>Model</th>
                                             <th>Prix de vente</th>
                                             <th>Prix Minimuim</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -45,8 +44,6 @@
                                         <td>{{ $produit->prix_vente }}</td>
                                         <td>{{ $produit->prix_minimum }}</td>
 
-                                        </td>
-                                        <td>{{ $produit->status }}</td>
                                         <td>
                                             <div class="btn-group mb-1">
                                                 <button type="button" class="btn btn-outline-success add_to_cart"
@@ -109,7 +106,10 @@
                                 <span>Facture ID:</span>
                                 <span class="text-dark">#{{ $newInvoiceNumber }}</span>
                                 <br><span>Date :</span> {{ \Carbon\Carbon::now()->toDateString() }}
-                                <br> <span>VAT:</span> PL6541215450
+                                <br> <span>Type:</span> <select name="mode_achat" class="paiement" id="">
+                                    <option value="paiement">Paiement</option>
+                                    <option value="deal">Deal</option>
+                                </select>
                             </address>
                         </div>
                     </div>
@@ -266,6 +266,21 @@
             /* Taille du texte (ajustez selon vos besoins) */
             width: 100%;
             /* Ajuste la largeur selon vos besoins */
+        }
+
+        .paiement {
+            background-color: transparent;
+            /* Rend l'arrière-plan transparent */
+            border: none;
+            /* Supprime la bordure */
+            outline: none;
+            /* Supprime la bordure lors de la mise au point (focus) */
+            color: #000;
+            /* Couleur du texte (ajustez-la si nécessaire) */
+            font-size: 16px;
+            /* Taille du texte (ajustez selon vos besoins) */
+            width: 100%;
+            width: 60%;
         }
 
         address input {
@@ -477,6 +492,32 @@
                 // Ne pas fermer la fenêtre automatiquement
                 // printWindow.close(); // Supprimez ou commentez cette ligne si vous ne voulez pas fermer la fenêtre automatiquement
             });
+            $('select[name="mode_achat"]').on('change', function(e) {
+                e.preventDefault();
+                var selectedValue = this.value;
+                console.log('valeur selectionnée :', selectedValue);
+                loadInvoiceTable(selectedValue);
+
+            });
+
+            function loadInvoiceTable(selectedValue) {
+                var url = '';
+
+                // Définir l'URL de la vue à charger en fonction de la valeur sélectionnée
+                if (selectedValue === 'deal') {
+                    url = "{{ route('deal-view') }}"; // URL pour charger la vue 'deal'
+                } else if (selectedValue === 'paiement') {
+                    url = "{{ route('paiement-view') }}"; // URL pour charger la vue 'paiement'
+                }
+
+                // Faire une requête AJAX pour charger la vue
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('facture-table').innerHTML = html; // Injecter le HTML chargé
+                    })
+                    .catch(error => console.log('Erreur lors du chargement de la vue :', error));
+            }
 
         });
     </script>

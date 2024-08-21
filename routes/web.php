@@ -24,6 +24,8 @@ Route::resource('/categories',App\Http\Controllers\CategoryController::class);
 Route::resource('/subCategory',App\Http\Controllers\SubCategoryController::class);
 Route::resource('/clients',App\Http\Controllers\ClientController::class);
 Route::get('/client/search',[App\Http\Controllers\ClientController::class,'findClient'])->name('client-info');
+Route::get('/facture/deal-invoice-view',[\App\Http\Controllers\OrderController::class,'dealView'])->name('deal-view');
+Route::get('/facture/paiement-invoice-view',[\App\Http\Controllers\OrderController::class,'paiementView'])->name('paiement-view');
 
 Route::resource('/produits',\App\Http\Controllers\ProduitController::class);
 Route::resource('/factures',\App\Http\Controllers\OrderController::class);

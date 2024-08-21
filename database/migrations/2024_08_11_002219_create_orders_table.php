@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id')->nullable();
             $table->string('order_number',30)->unique();
             $table->json('produits')->default(json_encode([]));
             $table->float('reduction')->default(0);
             $table->float('prix_total')->default(0);
-            $table->unsignedBigInteger('admin_id')->nullable();
             $table->enum('mode_achat',['deal','paiement'])->default('paiement');
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->unsignedBigInteger('produit_id')->nullable();
+            $table->unsignedBigInteger('admin_id')->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
+            $table->foreign('produit_id')->references('id')->on('produits')->onDelete('set null');
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('set null');
             $table->timestamps();
         });
