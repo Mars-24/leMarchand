@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('prenoms')->nullable();
             $table->string('photo')->nullable();
             $table->string('telephone')->unique()->nullable();
+            $table->string('adresse')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->timestamps();
         });

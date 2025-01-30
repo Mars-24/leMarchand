@@ -19,13 +19,16 @@ return new class extends Migration
             $table->double('prix_vente')->default(0);
             $table->double('prix_minimum')->default(0);
             $table->integer('quantite')->default(1);
-            $table->integer('garantie');
-            $table->enum('status',['en_stock', 'vendu', 'reserve','reparation','deal']);
+            $table->integer('garantie')->default(1);
+            $table->enum('status',['en_stock', 'vendu', 'reserve','reparation','deal','obselete']);
+            $table->enum('provenance',['deal','fournisseur'])->default('fournisseur');
             $table->string('code_bar')->unique()->nullable();
             $table->unsignedBigInteger('fournisseur_id');
             $table->unsignedBigInteger('subcategory_id');
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs')->onDelete('cascade');
             $table->foreign('subcategory_id')->references('id')->on('sub_categories')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -3619,7 +3619,9 @@ textarea.form-control-lg {
   padding: 0.25rem 1rem;
   color: #212529;
 }
-
+.alert-danger{
+  transition: opacity 1s ease;
+}
 .dropdown-menu-dark {
   color: #dee2e6;
   background-color: #343a40;
@@ -12419,8 +12421,8 @@ textarea.form-control-lg {
   font-weight: 500;
 }
 .invoice-wrapper .inv-tbl tbody tr:nth-of-type(odd) > * {
-  background-color: #f9f9f9;
-  --bs-table-accent-bg: #f9f9f9;
+  background-color: #fff;
+  --bs-table-accent-bg: #fff;
 }
 .invoice-wrapper .inv-tbl tbody tr td {
   vertical-align: middle;

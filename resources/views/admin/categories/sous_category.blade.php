@@ -8,6 +8,7 @@
 				<p class="breadcrumbs"><span><a href="{{ route('admin.dashboard') }}">Acceuil</a></span>
 					<span><i class="mdi mdi-chevron-right"></i></span>Sous Categorie</p>
 			</div>
+			@include('admin.layouts.errors-infos')
 			<div class="row">
 				<div class="col-xl-4 col-lg-12">
 					<div class="ec-cat-list card card-default mb-24px">
@@ -57,10 +58,9 @@
 											<th>Icones</th>
 											<th>Nom</th>
 											<th>Categories</th>
-											<th>Product</th>
+											<th>Produits</th>
 											<th>Total Sell</th>
 											<th>Status</th>
-											<th>Trending</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -68,17 +68,18 @@
 									<tbody>
 										@foreach ($subcategories as $subcategorie)
 										<tr>
-											<td><img class="cat-thumb" src="assets/img/category/clothes.png" alt="product image"/></td>
+											<td>
+												<img class="cat-thumb" src="{{asset($subcategorie->categorie->photo)}}" alt="product image"/>
+											</td>
 											<td>{{$subcategorie->nom}}</td>
 											<td>
 												<span class="ec-sub-cat-list">
 													<span class="ec-sub-cat-tag">{{$subcategorie->categorie->nom}}</span>
 												</span>
 											</td>
-											<td>28</td>
+											<td>{{$subcategorie->products_count}}</td>
 											<td>2161</td>
 											<td>ACTIVE</td>
-											<td><span class="badge badge-success">Top</span></td>
 											<td>
 												<div class="btn-group">
 													<button type="button"
@@ -91,7 +92,7 @@
 													</button>
 
 													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#">Edit</a>
+														<a class="dropdown-item" href="#">Editer</a>
 														<a class="dropdown-item" href="#">Delete</a>
 													</div>
 												</div>

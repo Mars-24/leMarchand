@@ -14,6 +14,8 @@
                     <a href="{{ route('produits.create') }}" class="btn btn-primary"> Ajouter Produit</a>
                 </div>
             </div>
+            @include('admin.layouts.errors-infos')
+
             <div class="row">
                 <div class="col-12">
                     <div class="card card-default">
@@ -48,9 +50,9 @@
                                         @endif
                                         <td>{{ $produit->subcategory->nom }}</td>
                                         <td>{{ $produit->model }}</td>
-                                        <td>{{ $produit->prix_vente }}</td>
-										<td>{{ $produit->prix_achat }}</td>
-                                        <td>{{ $produit->prix_minimum }}</td>
+                                        <td>{{ $produit->prix_vente }} fr</td>
+										<td>{{ $produit->prix_achat }} fr</td>
+                                        <td>{{ $produit->prix_minimum }} fr</td>
                                         <td onclick="window.print()">
                                             @php
                                                 $barcode = new \Milon\Barcode\DNS1D();
@@ -71,7 +73,7 @@
                                                 </button>
 
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#">Editer</a>
+                                                    <a class="dropdown-item" href="{{route('produits.edit',$produit->id)}}">Editer</a>
                                                     <a class="dropdown-item" href="{{route('produits.show',$produit->id)}}">Details</a>
                                                     <form action="{{ route('produits.destroy', $produit->id) }}"
                                                         method="POST">

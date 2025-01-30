@@ -31,7 +31,8 @@
 						<div class="card-header bg-primary">
 							<div class="ec-brand">
 								<a href="{{route('admin.connexion')}}" title="Ekka">
-									<img class="ec-brand-icon" src="{{asset('img/logo/logo-login.png')}}" alt="" />
+									<h2 style="display: contents;color:white">Le Marchand</h2>
+									{{-- <img class="ec-brand-icon" src="{{asset('img/logo/logo-login.png')}}" alt="" /> --}}
 								</a>
 							</div>
 						</div>

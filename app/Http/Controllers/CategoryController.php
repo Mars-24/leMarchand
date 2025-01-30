@@ -16,7 +16,9 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::all();
+        // $categories = Category::all();
+        $categories = Category::withCount(['subCategories', 'products'])->get();
+        // return dd($categories);
         return view('admin.categories.index',compact('categories'));
     }
 
@@ -30,7 +32,8 @@ class CategoryController extends Controller
 
     public function subCategory(){
         $categories = Category::all();
-        $subcategories = SubCategory::with('categorie')->get();
+        $subcategories = SubCategory::with('categorie')->withCount('products')->get();
+        // return dd($subcategories);
         return view('admin.categories.sous_category',compact('categories','subcategories'));
     }
 

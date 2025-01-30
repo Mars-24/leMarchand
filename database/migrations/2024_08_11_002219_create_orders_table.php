@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('order_number',30)->unique();
             $table->json('produits')->default(json_encode([]));
-            $table->float('reduction')->default(0);
+            $table->float('reduction')->default(0)->nullable();
+            $table->float('acompte')->default(0)->nullable();
             $table->float('prix_total')->default(0);
-            $table->enum('mode_achat',['deal','paiement'])->default('paiement');
+            $table->enum('mode_achat',['deal','paiement','acompte'])->default('paiement');
             $table->unsignedBigInteger('client_id')->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();

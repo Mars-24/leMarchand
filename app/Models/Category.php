@@ -9,7 +9,13 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable=['nom','photo','description'];
-    public function subCategories(){
-        return $this->hasMany(SubCategory::class);
+
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class, 'categorie_id');
+    }
+    public function products()
+    {
+        return $this->hasManyThrough(Produit::class, SubCategory::class, 'categorie_id', 'subcategory_id');
     }
 }
