@@ -50,8 +50,10 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="ec-vendor-upload-detail">
-                                        <form class="row g-3" action="{{route('produits.store')}}" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
+                                        <form class="row g-3" action="{{route('produits.update',$produit->id)}}" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
 											@csrf
+                                            @method('PUT')
+
 											@php
 											// Regrouper les sous-catégories par category_id
 											$groupedSubCategories = $subCategories->groupBy('categorie_id');
@@ -95,6 +97,20 @@
                                                 <label class="form-label">Ganrantie <span>(En mois)</span> </label>
                                                 <input type="number" class="form-control" id="garantie1" name="garantie" max="12" value="{{$produit->garantie}}"/>
                                             </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-4">
+                                                    <label for="status">Status</label>
+                                                    <select id="parent-category" name="status" class="form-control">
+                                                        <option value="default">Status du produit</option>
+                                                        <option value="en_stock">En stock</option>
+                                                        <option value="vendu">Vendu</option>
+                                                        <option value="reserve">Reserve</option>
+                                                        <option value="reparation">Reparation</option>
+                                                        <option value="deal">Deal</option>
+                                                        <option value="obselete">Obselete</option>
+                                                    </select>
+                                                </div>
+                                            </div> 
 											<div class="col-md-6">
                                                 <label class="form-label">Fournisseur</label>
                                                 <select name="fournisseur_id" id="Fournisseur" class="form-select" onchange="checkFournisseur(this.value)">

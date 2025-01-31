@@ -32,7 +32,10 @@ Route::resource('/categories',App\Http\Controllers\CategoryController::class);
 Route::resource('/depenses',App\Http\Controllers\DepenseController::class);
 Route::resource('/fonds',App\Http\Controllers\FondDeCaisseController::class);
 Route::resource('/subCategory',App\Http\Controllers\SubCategoryController::class);
+Route::get('/clients/fideles',[App\Http\Controllers\ClientController::class,'clientFidele'])->name('client.fideles');
 Route::resource('/clients',App\Http\Controllers\ClientController::class);
+
+
 Route::resource('/admins',App\Http\Controllers\AdminController::class);
 Route::get('/client/search',[App\Http\Controllers\ClientController::class,'findClient'])->name('client-info');
 Route::get('/facture/deal-invoice-view',[\App\Http\Controllers\OrderController::class,'dealView'])->name('deal-view');

@@ -4,7 +4,7 @@
             <th>#</th>
             <td>Supprimer</td>
             <th>produit</th>
-            <th>Quantité</th>
+            <th>Garantie</th>
             <th>prix</th>
             <th>Total</th>
         </tr>
@@ -13,11 +13,11 @@
     <tbody>
         @foreach (\Gloudemans\Shoppingcart\Facades\Cart::instance('facture')->content() as $item)
             <tr>
-                <td>1</td>
+                <td>{{$loop->index+1}}</td>
                 <td> <span class="cart_delete" data-id="{{ $item->rowId }}"> <i class="mdi mdi-delete-forever"></i>
                     </span>
                 <td>{{ $item->name }} </td>
-                <td>{{ $item->qty }}</td>
+                <td>{{ $item->qty }} Semaine(s)</td>
                 <td>
                     <input class="price-text" type="number" data-id="{{ $item->rowId }}"
                         id="price-input-{{ $item->rowId }}" value="{{ $item->price }}" name="price">
@@ -51,7 +51,6 @@
             </li>
         </ul>
 
-        <a href="javascript:void(0)" class="btn btn-block mt-2 btn-primary btn-pill print-column"> Imprimer</a>
     </div>
 </div>
 <style>

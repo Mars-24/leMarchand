@@ -34,13 +34,15 @@ class OrderController extends Controller
         $subCategories = SubCategory::with('categorie')->get();
 
         $cart_array = [];
-        // dd($product);
+        //  dd($product);
 
         foreach (Cart::instance('facture')->content() as $item) {
             $cart_array[] = $item->id;
         }
-        $result = Cart::instance('facture')->add($product_id, $product[0]['subcategory']['nom'] . ' ' . $product[0]['model'], $product_qty, $product[0]['prix_vente'])->associate('App\Models\Produit');
-        // dd($result);
+        $result = Cart::instance('facture')->add($product_id, $product[0]['subcategory']['nom'] . ' ' . $product[0]['model'], 1, $product[0]['prix_vente'])->associate('App\Models\Produit');
+        Cart::instance('facture')->update($result->rowId, ['options' => ['garantie' => $product[0]['garantie'] ?? "1"]]);
+
+        //  dd($result);
         if ($result) {
             $response['status'] = true;
             $response['product_id'] = $product_id;

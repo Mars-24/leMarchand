@@ -50,9 +50,9 @@
                                         @endif
                                         <td>{{ $produit->subcategory->nom }}</td>
                                         <td>{{ $produit->model }}</td>
-                                        <td>{{ $produit->prix_vente }} fr</td>
-										<td>{{ $produit->prix_achat }} fr</td>
-                                        <td>{{ $produit->prix_minimum }} fr</td>
+                                        <td>{{ number_format($produit->prix_vente,'0',',','.') }} fr</td>
+										<td>{{ number_format($produit->prix_achat,'0',',','.') }} fr</td>
+                                        <td>{{ number_format($produit->prix_minimum,'0',',','.') }} fr</td>
                                         <td onclick="window.print()">
                                             @php
                                                 $barcode = new \Milon\Barcode\DNS1D();
@@ -127,4 +127,7 @@
                 });
         });
     </script>
+    <script src="{{asset('plugins/data-tables/jquery.datatables.min.js')}}"></script>
+	<script src="{{asset('/plugins/data-tables/datatables.bootstrap5.min.js')}}"></script>
+	<script src="{{asset('plugins/data-tables/datatables.responsive.min.js')}}"></script>
 @endsection

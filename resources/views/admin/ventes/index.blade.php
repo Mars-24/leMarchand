@@ -106,15 +106,15 @@
                                 </address>
 
                             </div>
-                            <div class="print-para invoice-header">
+                            <div class="print-para invoice-header mb-3">
                                 <div>
                                     <p><strong>Lemarchand</strong></p>
                                     <p>Agbalepedo,Rond Point Oeuf</p>
                                     <p>Tél: +228 92 86 06 75</p>
                                 </div>
-                                <div>
+                                {{-- <div>
                                     <img src="logo.png" alt="Le Marchand">
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-xl-4 col-lg-4 col-sm-6">
                                 <p class="text-dark mb-2 no-print">A</p>
@@ -132,7 +132,7 @@
                                 </address>
                             </div>
                             <div class="col-xl-1 disp-none"></div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-sm-6 mb-2 mt-2">
                                 <p class="text-dark mb-2">Details :</p>
 
                                 <address class="adresse-print">
@@ -324,11 +324,11 @@
             }
 
             .price-td {
-                width: 50%;
+                width: 40%;
             }
 
             .price-text {
-                width: 50%;
+                width: 75%;
 
             }
 
@@ -362,7 +362,7 @@
             }
 
             .inc-total {
-                margin-top: 10px
+                margin-top: 10px;
             }
 
             .invoice-header {

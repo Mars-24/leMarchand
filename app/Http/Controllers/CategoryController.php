@@ -32,8 +32,12 @@ class CategoryController extends Controller
 
     public function subCategory(){
         $categories = Category::all();
-        $subcategories = SubCategory::with('categorie')->withCount('products')->get();
-        // return dd($subcategories);
+        $subcategories = SubCategory::with('categorie')
+        ->withCount('products')
+        ->withCount(['products as sold_products_count' => function ($query) {
+            $query->where('status', 'vendu');
+        }])
+        ->get();        // return dd($subcategories);
         return view('admin.categories.sous_category',compact('categories','subcategories'));
     }
 

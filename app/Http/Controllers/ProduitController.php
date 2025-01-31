@@ -136,9 +136,17 @@ class ProduitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produit $produit)
+    public function update(Request $request, $id)
     {
         //
+        $produit = Produit::findOrFail($id);
+        $data = $request->all();
+        $status = $produit->update($data);
+        if ($status) {
+            return redirect()->route('produits.index')->with('success', 'Produit bien modifier');
+        } else {
+            return redirect()->back()->with('error', 'Erreur lors de la modification du produit');
+        }
     }
 
     /**

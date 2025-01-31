@@ -29,8 +29,8 @@ class AdminController extends Controller
 
     public function index()
     {
-        $admins =Admin::where('role','!=','admin')->get();
-        return view('admin.admin.index',compact('admins'));
+        $admins = Admin::where('role', '!=', 'admin')->get();
+        return view('admin.admin.index', compact('admins'));
     }
 
 
@@ -59,22 +59,45 @@ class AdminController extends Controller
     {
         $ordersTodayCount = Order::whereDate('created_at', Carbon::today())
             ->count();
+
+        $ordersThisMonthCount = Order::whereYear('created_at', Carbon::now()->year)
+    ->whereMonth('created_at', Carbon::now()->month)
+    ->count();
+
         $ventes = Order::with('client')->take(5)->get();
+
         $clients = Client::with('orders')->take(6)->get();
+
+        $superclients = Client::withCount('orders') // Compter le nombre de commandes par client
+    ->orderBy('orders_count', 'desc') // Trier par nombre de commandes décroissant
+    ->take(6) // Prendre seulement les 6 premiers
+    ->get();
+
         $totalMontant = Depense::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->sum('montant');
+
         $totalPriceToday = Order::whereDate('created_at', Carbon::today())
             ->sum('prix_total');
+
+        $totalPriceThisMonth = Order::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('prix_total');
+
+        $totalPriceThisYear = Order::whereYear('created_at', Carbon::now()->year)
+            ->sum('prix_total');
+
         $clientsTodayCount = Order::whereDate('created_at', Carbon::today())
             ->distinct('client_id')
             ->count('client_id');
+
         $fondCaisse = FondDeCaisse::all()->sum('montant_initial');
-        return view('admin.dashboard', compact('ordersTodayCount', 'totalPriceToday', 'clientsTodayCount', 'ventes', 'clients', 'totalMontant','fondCaisse'));
+        return view('admin.dashboard', compact('ordersTodayCount', 'totalPriceToday', 'clientsTodayCount', 'ventes', 'clients', 'totalMontant', 'fondCaisse','totalPriceThisYear','totalPriceThisMonth','ordersThisMonthCount','superclients'));
     }
 
 
-    public function profil(){
+    public function profil()
+    {
         return view('admin.profil');
     }
     /**
@@ -91,21 +114,21 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        if($request->has('photo')){
+        if ($request->has('photo')) {
             $destination_path = 'public';
-            $file = $request->file('photo');  
+            $file = $request->file('photo');
             $file_name = $file->getClientOriginalName();
             $image = ImageManager::imagick()->read($file);
-            $photo = $image->resize(640,640);
+            $photo = $image->resize(640, 640);
             $photo->save(storage_path('app/' . $destination_path . '/' . $file_name));
-            $data['photo']= $file_name;
+            $data['photo'] = $file_name;
         }
-        $data['password']=Hash::make('leMarchand2@25');
+        $data['password'] = Hash::make('leMarchand2@25');
         $status = Admin::create($data);
         if ($status) {
-            return redirect()->route('admins.index')->with('success','Admin crée');
+            return redirect()->route('admins.index')->with('success', 'Admin crée');
         } else {
-            return redirect()->route('admins.index')->with('error','Erreur lors de la creation de admin');
+            return redirect()->route('admins.index')->with('error', 'Erreur lors de la creation de admin');
         }
     }
     /**
@@ -115,7 +138,7 @@ class AdminController extends Controller
     {
         //
         $admin = Admin::find($id);
-        return view('admin.admin.details',compact('admin'));
+        return view('admin.admin.details', compact('admin'));
     }
 
     /**

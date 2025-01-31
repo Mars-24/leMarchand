@@ -42,13 +42,7 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                {{-- <div class="single-nav-thumb">
-                                                    <div class="single-slide">
-                                                        <img class="img-responsive" src="{{ asset('storage/' . $produit->photo) }}"
-                                                            alt="">
-                                                    </div>
-                                                   
-                                                </div> --}}
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -80,20 +74,7 @@
                                                 <li class="size" onclick="printBarcode()"><span>Imprimer Code Bar</span>
                                                 </li>
                                             </ul>
-                                            {{-- <div class="product-stock">
-                                                <div class="stock">
-                                                    <p class="title">Available</p>
-                                                    <p class="text">180</p>
-                                                </div>
-                                                <div class="stock">
-                                                    <p class="title">Pending</p>
-                                                    <p class="text">50</p>
-                                                </div>
-                                                <div class="stock">
-                                                    <p class="title">InOrder</p>
-                                                    <p class="text">20</p>
-                                                </div>
-                                            </div> --}}
+                                    
                                         </div>
 
                                     </div>
@@ -167,6 +148,7 @@
                 top: 0;
                 width: 100%;
                 text-align: center;
+                /* margin: 60px; */
             }
         }
     </style>

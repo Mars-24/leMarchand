@@ -11,7 +11,6 @@
                 </p>
             </div>
             <div>
-                <a href="user-list.html" class="btn btn-primary">Editer </a>
             </div>
         </div>
         <div class="card bg-white profile-content">
@@ -90,11 +89,7 @@
                                     data-bs-target="#profile" type="button" role="tab"
                                     aria-controls="profile" aria-selected="true">Profile</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="settings-tab" data-bs-toggle="tab"
-                                    data-bs-target="#settings" type="button" role="tab"
-                                    aria-controls="settings" aria-selected="false">Parametre</button>
-                            </li>
+                            
                         </ul>
                         <div class="tab-content px-3 px-xl-5" id="myTabContent">
 
@@ -305,80 +300,6 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="settings" role="tabpanel"
-                                aria-labelledby="settings-tab">
-                                <div class="tab-pane-content mt-5">
-                                    <form>
-                                        <div class="form-group row mb-6">
-                                            <label for="coverImage"
-                                                class="col-sm-4 col-lg-2 col-form-label">User Image</label>
-                                            <div class="col-sm-8 col-lg-10">
-                                                <div class="custom-file mb-1">
-                                                    <input type="file" class="custom-file-input"
-                                                        id="coverImage" required>
-                                                    <label class="custom-file-label" for="coverImage">Choose
-                                                        file...</label>
-                                                    <div class="invalid-feedback">Example invalid custom
-                                                        file feedback</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-2">
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="firstName">First name</label>
-                                                    <input type="text" class="form-control" id="firstName"
-                                                        value="First name">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="lastName">Last name</label>
-                                                    <input type="text" class="form-control" id="lastName"
-                                                        value="Last name">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group mb-4">
-                                            <label for="userName">User name</label>
-                                            <input type="text" class="form-control" id="userName"
-                                                value="User name">
-                                            <span class="d-block mt-1">Accusamus nobis at omnis consequuntur
-                                                culpa tempore saepe animi.</span>
-                                        </div>
-
-                                        <div class="form-group mb-4">
-                                            <label for="email">Email</label>
-                                            <input type="email" class="form-control" id="email"
-                                                value="ekka.example@gmail.com">
-                                        </div>
-
-                                        <div class="form-group mb-4">
-                                            <label for="oldPassword">Old password</label>
-                                            <input type="password" class="form-control" id="oldPassword">
-                                        </div>
-
-                                        <div class="form-group mb-4">
-                                            <label for="newPassword">New password</label>
-                                            <input type="password" class="form-control" id="newPassword">
-                                        </div>
-
-                                        <div class="form-group mb-4">
-                                            <label for="conPassword">Confirm password</label>
-                                            <input type="password" class="form-control" id="conPassword">
-                                        </div>
-
-                                        <div class="d-flex justify-content-end mt-5">
-                                            <button type="submit"
-                                                class="btn btn-primary mb-2 btn-pill">Update
-                                                Profile</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
 
                         </div>
                     </div>

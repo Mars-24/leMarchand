@@ -39,6 +39,9 @@
 													<span>{{$order->client->email}}</span>
 													@endif
 													<br>
+													@if ($order->mode_achat==='acompte')
+														Reste à payer : {{ number_format($order->prix_total - $order->acompte,'0',',','.')}} FrCFA
+													@endif
 												</div>
 											</address>
 										</div>
@@ -74,7 +77,7 @@
                                                         
                                                         <tr>
 															<td>{{$loop->index+1}}</td>
-														
+															
 															<td class="text-center">{{$produit[0]}}
                                                                 </td>
 															<td class="text-center">{{number_format($produit[1],'0',',','.')}} FR
@@ -92,14 +95,14 @@
 															<td class="text-right"><strong>N/A</strong></td>
 														</tr> --}}
 														<tr>
-															<td colspan="4">
+															<td colspan="3">
 															</td>
 															<td class="text-right"><strong>Total</strong></td>
 															<td class="text-right"><strong>{{number_format($order->prix_total,'0',',','.')}} FR</strong></td>
 														</tr>
 
 														<tr>
-															<td colspan="4">
+															<td colspan="3">
 															</td>
 															<td class="text-right"><strong>Status du paiement</strong></td>
 															<td class="text-right"><strong>PAID</strong></td>

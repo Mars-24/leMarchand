@@ -92,7 +92,7 @@
                                                 <input type="number" class="form-control" id="price3" name="prix_minimum">
                                             </div>
 											<div class="col-md-6">
-                                                <label class="form-label">Ganrantie <span>(En mois)</span> </label>
+                                                <label class="form-label">Ganrantie <span>(En semaine)</span> </label>
                                                 <input type="number" class="form-control" id="garantie1" name="garantie" max="12"/>
                                             </div>
 											<div class="col-md-6">

@@ -51,31 +51,41 @@
                         <span class="mdi mdi-account-arrow-left"></span>
                     </div>
                 </div>
-            </div>
+            </div>          
             <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
-                <div class="card card-mini dash-card card-2">
+                <div class="card card-mini dash-card card-4">
                     <div class="card-body">
-                        <h2 class="mb-1">79,503 FrCFA</h2>
-                        <p>Chiffre affaire mensuelle</p>
-                        <span class="mdi mdi-account-clock"></span>
+                        <h2 class="mb-1">{{number_format($totalPriceToday,'0',',','.')}}  FrCFA</h2>
+                        <p>Chiffre d'affaire journalier</p>
+                        <span class="mdi mdi-currency-XOF"></span>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
                 <div class="card card-mini dash-card card-3">
                     <div class="card-body">
-                        <h2 class="mb-1">{{$ordersTodayCount}}</h2>
+                        <h2 class="mb-1">{{$ordersThisMonthCount}}</h2>
                         <p>Ventes mensuelle</p>
                         <span class="mdi mdi-package-variant"></span>
                     </div>
                 </div>
             </div>
+           
             <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
-                <div class="card card-mini dash-card card-4">
+                <div class="card card-mini dash-card card-2">
                     <div class="card-body">
-                        <h2 class="mb-1">{{number_format($totalPriceToday,'0',',','.')}}  FrCFA</h2>
-                        <p>Chiffre affaire</p>
-                        <span class="mdi mdi-currency-XOF"></span>
+                        <h2 class="mb-1">{{number_format($totalPriceThisMonth,'0',',','.')}}  FrCFA</h2>
+                        <p>Chiffre d'affaire mensuelle</p>
+                        <span class="mdi mdi-account-clock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                <div class="card card-mini dash-card card-2">
+                    <div class="card-body">
+                        <h2 class="mb-1">{{number_format($totalPriceThisYear,'0',',','.')}}  FrCFA</h2>
+                        <p>Chiffre d'affaire annuelle</p>
+                        <span class="mdi mdi-account-clock"></span>
                     </div>
                 </div>
             </div>
@@ -308,82 +318,69 @@
             </div>
 
             <div class="col-xl-7">
-                <!-- Top Products -->
-                <div class="card card-default ec-card-top-prod">
-                    <div class="card-header justify-content-between">
-                        <h2>Produits phares</h2>
+                <!-- New Customers -->
+                <div class="card ec-cust-card card-table-border-none card-default">
+                    <div class="card-header justify-content-between ">
+                        <h2>Super clients</h2>
                         <div>
-                            <button class="text-black-50 mr-2 font-size-20"><i
-                                    class="mdi mdi-cached"></i></button>
+                            <button class="text-black-50 mr-2 font-size-20">
+                                <i class="mdi mdi-cached"></i>
+                            </button>
                             <div class="dropdown show d-inline-block widget-dropdown">
                                 <a class="dropdown-toggle icon-burger-mini" href="#" role="button"
-                                    id="dropdown-product" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    id="dropdown-customar" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false" data-display="static">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li class="dropdown-item"><a href="#">Update Data</a></li>
-                                    <li class="dropdown-item"><a href="#">Detailed Log</a></li>
-                                    <li class="dropdown-item"><a href="#">Statistics</a></li>
-                                    <li class="dropdown-item"><a href="#">Clear Data</a></li>
+                                    <li class="dropdown-item"><a href="{{route('client.fideles')}}">Liste des client</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body mt-10px mb-10px py-0">
-                        <div class="row media d-flex pt-15px pb-15px">
-                            <div
-                                class="col-lg-3 col-md-3 col-2 media-image align-self-center rounded">
-                                <a href="#"><img src="assets/img/products/p1.jpg" alt="customer image"></a>
-                            </div>
-                            <div class="col-lg-9 col-md-9 col-10 media-body align-self-center ec-pos">
-                                <a href="#">
-                                    <h6 class="mb-10px text-dark font-weight-medium">Baby cotton shoes</h6>
-                                </a>
-                                <p class="float-md-right sale"><span class="mr-2">58</span>Sales</p>
-                                <p class="d-none d-md-block">Statement belting with double-turnlock hardware
-                                    adds “swagger” to a simple.</p>
-                                <p class="mb-0 ec-price">
-                                    <span class="text-dark">$520</span>
-                                    <del>$580</del>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row media d-flex pt-15px pb-15px">
-                            <div
-                                class="col-lg-3 col-md-3 col-2 media-image align-self-center rounded">
-                                <a href="#"><img src="assets/img/products/p2.jpg" alt="customer image"></a>
-                            </div>
-                            <div class="col-lg-9 col-md-9 col-10 media-body align-self-center ec-pos">
-                                <a href="#">
-                                    <h6 class="mb-10px text-dark font-weight-medium">Hoodies for men</h6>
-                                </a>
-                                <p class="float-md-right sale"><span class="mr-2">20</span>Sales</p>
-                                <p class="d-none d-md-block">Statement belting with double-turnlock hardware
-                                    adds “swagger” to a simple.</p>
-                                <p class="mb-0 ec-price">
-                                    <span class="text-dark">$250</span>
-                                    <del>$300</del>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row media d-flex pt-15px pb-15px">
-                            <div
-                                class="col-lg-3 col-md-3 col-2 media-image align-self-center rounded">
-                                <a href="#"><img src="assets/img/products/p3.jpg" alt="customer image"></a>
-                            </div>
-                            <div class="col-lg-9 col-md-9 col-10 media-body align-self-center ec-pos">
-                                <a href="#">
-                                    <h6 class="mb-10px text-dark font-weight-medium">Long slive t-shirt</h6>
-                                </a>
-                                <p class="float-md-right sale"><span class="mr-2">10</span>Sales</p>
-                                <p class="d-none d-md-block">Statement belting with double-turnlock hardware
-                                    adds “swagger” to a simple.</p>
-                                <p class="mb-0 ec-price">
-                                    <span class="text-dark">$480</span>
-                                    <del>$654</del>
-                                </p>
-                            </div>
-                        </div>
+                    <div class="card-body pt-0 pb-15px">
+                        <table class="table ">
+                            <tbody>
+                                @foreach ($superclients as $client)
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="media-image mr-3 rounded-circle">
+                                                <a href="#">
+                                                    
+                                                
+                                                        @if ($client->photo)
+                                                        <img src="{{ asset('storage/' . $client->photo) }}" class="profile-img rounded-circle w-45"
+                                                            alt="Avatar Image">
+                                                    @else
+                                                        <img src="{{ asset('img/user/u-xl-6.jpg') }}" class="profile-img rounded-circle w-45" alt="Avatar Image">
+                                                    @endif
+                                                    
+                                                    </a>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <a href="profile.html">
+                                                    <h6 class="mt-0 text-dark font-weight-medium">{{ $client->nom }} {{ $client->prenoms }}</h6>
+                                                </a>
+                                                <small>@if ($client->email)
+                                                    {{$client->email}}
+                                                @else
+                                                    Pas de email
+                                                @endif</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @php
+                                        $last = count($client->orders)-1;
+                                        $commande = count($client->orders);
+                                    @endphp
+                                    <td> {{$commande}} Commande(s)</td>
+                                    <td class="text-dark d-none d-md-block"> {{$client->orders[$last]->prix_total}} fr</td>
+                                </tr>
+                                @endforeach
+                               
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

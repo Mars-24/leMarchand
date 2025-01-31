@@ -67,6 +67,16 @@ class ClientController extends Controller
         //
     }
 
+    public function clientFidele(){
+        $superclients = Client::withCount('orders') // Compter le nombre de commandes par client
+        ->orderBy('orders_count', 'desc') // Trier par nombre de commandes décroissant
+        ->take(6) // Prendre seulement les 6 premiers
+        ->get();
+        // return dd($superclients);
+        return view('admin.clients.liste',compact('superclients'));
+
+    }
+
     public function findClient(Request $request){
             // Récupérer la valeur saisie par l'utilisateur
     $client = Client::where('nom', 'like', $request->input('nom') . '%')->first();

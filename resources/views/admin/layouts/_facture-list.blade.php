@@ -5,6 +5,7 @@
             <td class="del-btn">Supprimer</td>
             <th>produit</th>
             <th>prix</th>
+            <th>Garantie</th>
             <th class="del-btn">Total</th>
         </tr>
     </thead>
@@ -12,15 +13,18 @@
     <tbody>
         @foreach (\Gloudemans\Shoppingcart\Facades\Cart::instance('facture')->content() as $item)
             <tr>
-                <td class="del-btn" >1</td>
+                <td class="del-btn" >{{$loop->index+1}}</td>
                 <td class="del-btn"> <span class="cart_delete" data-id="{{ $item->rowId }}"> <i class="mdi mdi-delete-forever"></i>
                     </span>
                 <td>{{ $item->name }} </td>
+
                 <td class="price-td">
                     <input class="price-text" type="number" data-id="{{ $item->rowId }}"
                         id="price-input-{{ $item->rowId }}" value="{{ $item->price }}" name="price"> fr
 
                 </td>
+                <td>{{ $item->options->garantie .'Semaine(s)' ?? 'Non spécifiée' }} </td>
+
                 <td class="del-btn">{{ $item->subtotal(0, ' ', ' ') }} fr</td>
             </tr>
         @endforeach
