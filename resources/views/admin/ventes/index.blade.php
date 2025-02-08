@@ -34,7 +34,6 @@
                                     <table id="responsive-data-table" class="table" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Produit</th>
                                                 <th>Nom</th>
                                                 <th>Model</th>
                                                 <th>Prix de vente</th>
@@ -46,16 +45,7 @@
                                         <tbody>
                                             @foreach ($produits as $produit)
                                                 <tr>
-                                                    <td>
-                                                        @if ($produit->photo)
-                                                            <img class="tbl-thumb"
-                                                                src="{{ asset('storage/' . $produit->photo) }}"
-                                                                alt="Product Image">
-                                                        @else
-                                                            <img class="tbl-thumb" src="{{ asset('img/products/p6.jpg') }}"
-                                                                alt="Product Image" />
-                                                    </td>
-                                            @endif
+                                                
                                             <td>{{ $produit->subcategory->nom }}</td>
                                             <td>{{ $produit->model }}</td>
                                             <td>{{ $produit->prix_vente }} fr</td>
@@ -162,38 +152,7 @@
                 </div>
             </form>
         </div> <!-- End Content -->
-        {{-- <div class="invoice">
-            <div class="invoice-header">
-                <div>
-                    <h1>Facture {{ $newInvoiceNumber }} </h1>
-                    <p><strong>Lemarchand</strong></p>
-                    <p>Agbalepedo,Rond Point Oeuf</p>
-                    <p>Tél: +228 92 86 06 75</p>
-                </div>
-                <div>
-                    <img src="logo.png" alt="Logo Supermarché">
-                </div>
-            </div>
-
-            <div class="invoice-info">
-                <h2>Client:</h2>
-                <p>Nom: Jean Dupont</p>
-                <p>Téléphone: +33 6 12 34 56 78</p>
-                <p class="date">Date: {{ \Carbon\Carbon::now()->toDateString() }}</p>
-            </div>
-
-            <div id="facture-table">
-                @include('admin.layouts._facture-list')
-
-            </div>
-
-            <div class="invoice-footer">
-                <p>Merci pour votre achat !</p>
-            </div>
-        </div> --}}
-        <div class="no-print">
-            <button onclick="window.print()">Imprimer la Facture</button>
-        </div>
+    
     </div> <!-- End Content Wrapper -->
     <style>
         .price-text,
@@ -245,143 +204,7 @@
         }
 
         /* Styles d'impression */
-        @media print {
-
-            footer,
-            header,
-            .ec-left-sidebar,
-            .breadcrumb-wrapper-2,
-            .del-btn {
-                visibility: hidden;
-                display: none;
-
-            }
-
-            span {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-
-            }
-
-            span input {
-                margin: 0;
-                /* Supprime tout espace ou marge entre les inputs */
-                padding: 0;
-                /* Facultatif : Ajuste l'espace interne (intérieur des champs) */
-                border-radius: 0;
-                /* Facultatif : Pour des bords nets */
-            }
-
-            .print-para {
-                display: block;
-            }
-
-            .invoice {
-                display: block;
-                visibility: visible;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                margin: 3px;
-                padding: 0 !important;
-            }
-
-            .adresse-print {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-            }
-
-            #name_client {
-                margin-right: 2px;
-            }
-
-            #prenoms_client {
-                margin-left: -100px;
-
-            }
-
-            .input-print {
-                display: inline;
-            }
-
-            address input {
-                border: none;
-                margin: 0;
-                padding: 0;
-                text-align: left;
-                width: unset;
-            }
-
-            .invoice-table th {
-                background: #fff !important;
-            }
-
-            body {
-                color: #000;
-            }
-
-            .price-td {
-                width: 40%;
-            }
-
-            .price-text {
-                width: 75%;
-
-            }
-
-            * {
-                font-size: 11.5px !important;
-                background-color: #fff !important;
-                color: #000;
-
-            }
-
-            .invoice-wrapper .inv-tbl tbody tr:nth-of-type(odd)>* {
-                background: #fff !important;
-                color: #000
-            }
-
-            .table-striped>tbody>tr:nth-of-type(odd)>* {
-                --bs-table-accent-bg: white !important;
-                color: #000
-            }
-
-            thead th {
-                color: #000
-            }
-
-            .text-dark {
-                color: #000 !important
-            }
-
-            td {
-                border-style: none;
-            }
-
-            .inc-total {
-                margin-top: 10px;
-            }
-
-            .invoice-header {
-                margin-top: -20px;
-                display: flex;
-                justify-content: space-between;
-            }
-
-            /* Masquer tous les autres éléments du body */
-
-
-            /* Afficher uniquement la facture lors de l'impression */
-
-
-            /* Masquer les éléments destinés uniquement à l'écran (comme les boutons) */
-            .no-print {
-                display: none;
-            }
-        }
+       
 
 
 
@@ -800,9 +623,6 @@
                 data.forEach(produit => {
                     const row = `
                 <tr>
-                    <td>
-                        <img class="tbl-thumb" src="/storage/${produit.photo || 'img/products/p6.jpg'}" alt="Image">
-                    </td>
                     <td>${produit.subcategory ? produit.subcategory.nom : 'N/A'}</td>
                     <td>${produit.model}</td>
                     <td>${produit.prix_vente} fr</td>

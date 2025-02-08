@@ -19,8 +19,8 @@ class ProduitController extends Controller
     public function index()
     {
         //
-        $produits = Produit::with('fournisseur')->with('subcategory')->get();
-        return view('admin.produits.index', compact('produits'));
+        $produits = Produit::with(['fournisseur', 'subcategory.categorie'])->get();
+    return view('admin.produits.index', compact('produits'));
     }
 
     /**
@@ -98,7 +98,7 @@ class ProduitController extends Controller
             }
             $data['photo'] = $photo_name;
             do {
-                $code_bar = Str::random(10); // Génère un code aléatoire de 10 caractères
+                $code_bar = Str::random(5); // Génère un code aléatoire de 10 caractères
             } while (Produit::where('code_bar', $code_bar)->exists()); // Assure l'unicité du code
 
             $data['code_bar'] = $code_bar;
@@ -117,7 +117,7 @@ class ProduitController extends Controller
     public function show($id)
     {
         //
-        $produit = Produit::with('fournisseur')->findOrFail($id);
+        $produit = Produit::with(['fournisseur', 'subcategory.categorie'])->findOrFail($id);
         return view('admin.produits.detail', compact('produit'));
     }
 
@@ -169,20 +169,23 @@ class ProduitController extends Controller
     }
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $search = $request->input('query');
 
         // Vérification simple : Si aucun paramètre n'est passé, retourner une liste vide
-        if (!$query) {
+        if (!$search) {
             return response()->json([]);
         }
 
         // Rechercher les produits correspondants
         $produits = Produit::with('subcategory')
-            ->where('code_bar', 'LIKE', "$query%")->Where('status', 'en_stock')
-            ->orWhere('model', 'LIKE', "$query%")
-            ->orWhere('prix_vente', 'LIKE', "%$query%")
-            ->get();
-
+        ->where('status', 'en_stock')
+        ->where(function ($query) use ($search) {
+            $query->where('code_bar', 'LIKE', "$search%")
+                  ->orWhere('model', 'LIKE', "$search%")
+                  ->orWhere('prix_vente', 'LIKE', "%$search%");
+        })
+        ->get();
+    
         // Retourner les données sous forme de JSON
         return response()->json($produits);
     }

@@ -24,11 +24,14 @@ Route::get('/cart/subtotal', function () {
     return response()->json(['subtotal' => $subtotal]);
 })->name('cart.subtotal');
 
+Route::post('/update-profil', [\App\Http\Controllers\AdminController::class, 'updateProfil'])->name('update.profil');
+
 Route::get('/fournisseurs',[\App\Http\Controllers\FournisseurController::class,'index'])->name('admin.fournisseur');
 Route::post('/save/fournisseur',[\App\Http\Controllers\FournisseurController::class,'store'])->name('admin.save.fournisseur');
 Route::delete('/delete/fournisseur/{id}',[\App\Http\Controllers\FournisseurController::class,'destroy'])->name('admin.delete.fournisseur');
 Route::get('/categories/sous-categorie',[\App\Http\Controllers\CategoryController::class,'subCategory'])->name('admin.categorie.subCategory');
 Route::resource('/categories',App\Http\Controllers\CategoryController::class);
+Route::get('/depenses/liste',[App\Http\Controllers\DepenseController::class,'liste'])->name('depense.liste');
 Route::resource('/depenses',App\Http\Controllers\DepenseController::class);
 Route::resource('/fonds',App\Http\Controllers\FondDeCaisseController::class);
 Route::resource('/subCategory',App\Http\Controllers\SubCategoryController::class);
@@ -46,6 +49,9 @@ Route::get('/produits/search', [\App\Http\Controllers\ProduitController::class, 
 
 Route::resource('/produits',\App\Http\Controllers\ProduitController::class);
 Route::resource('/defectueux',\App\Http\Controllers\ProduitDefectueuxController::class);
+
+
+Route::get('/factures/print/{id}', [\App\Http\Controllers\OrderController::class, 'print'])->name('factures.print');
 
 Route::resource('/factures',\App\Http\Controllers\OrderController::class);
 Route::post('/factures/add',[\App\Http\Controllers\OrderController::class,'cartStore'])->name('cart.store');

@@ -25,42 +25,60 @@ class OrderController extends Controller
     }
 
     public function cartStore(Request $request)
-    {
+{
+    $product_qty = $request->input('product_qty', 1); // Assurer une quantité par défaut de 1
+    $product_id = $request->input('product_id');
+    $mode_paiement = $request->input('mode_buy');
+    $product = Produit::getProduit($product_id);
+    $subCategories = SubCategory::with('categorie')->get();
 
-        $product_qty = $request->input('product_qty');
-        $product_id = $request->input('product_id');
-        $mode_paiement = $request->input('mode_buy');
-        $product = Produit::getProduit($product_id);
-        $subCategories = SubCategory::with('categorie')->get();
+    // Vérifier si le produit existe déjà dans le panier
+    $cartItem = Cart::instance('facture')->search(function ($cartItem) use ($product_id) {
+        return $cartItem->id == $product_id;
+    })->first();
 
-        $cart_array = [];
-        //  dd($product);
+    if ($cartItem) {
+        // Si le produit est déjà dans le panier, on ne l'ajoute pas à nouveau
+        $response['status'] = false;
+        $response['message'] = "Ce produit est déjà ajouté à la facture.";
+        $response['total'] = Cart::subtotal();
+        $response['cart_count'] = Cart::instance('facture')->count();
+    } else {
+        // Ajouter le produit seulement s'il n'est pas dans le panier
+        $result = Cart::instance('facture')->add(
+            $product_id,
+            $product[0]['subcategory']['nom'] . ' ' . $product[0]['model'],
+            1,
+            $product[0]['prix_vente']
+        )->associate('App\Models\Produit');
 
-        foreach (Cart::instance('facture')->content() as $item) {
-            $cart_array[] = $item->id;
-        }
-        $result = Cart::instance('facture')->add($product_id, $product[0]['subcategory']['nom'] . ' ' . $product[0]['model'], 1, $product[0]['prix_vente'])->associate('App\Models\Produit');
+        // Ajouter la garantie
         Cart::instance('facture')->update($result->rowId, ['options' => ['garantie' => $product[0]['garantie'] ?? "1"]]);
 
-        //  dd($result);
         if ($result) {
             $response['status'] = true;
-            $response['product_id'] = $product_id;
+            $response['message'] = "Produit ajouté à la facture.";
             $response['total'] = Cart::subtotal();
-            $response['message'] = "Produit ajouter a la facture";
             $response['cart_count'] = Cart::instance('facture')->count();
         }
-        if ($request->ajax()) {
-            if ($mode_paiement == 'paiement') {
-                $facture = view('admin.layouts._facture-list')->render();
-            } else {
-                $facture = view('admin.layouts._deal-facture-list', compact('subCategories'))->render();
-            }
-
-            $response['cart'] = $facture;
-        }
-        return json_encode($response);
     }
+
+    // Si la requête est en AJAX, on retourne la mise à jour de l'interface
+    if ($request->ajax()) {
+        if ($mode_paiement == 'paiement') {
+            $facture = view('admin.layouts._facture-list')->render();
+        } elseif ($mode_paiement == 'deal') {
+            $facture = view('admin.layouts._deal-facture-list', compact('subCategories'))->render();
+        } elseif ($mode_paiement == 'acompte') {
+            $facture = view('admin.layouts._acompte-list', compact('subCategories'))->render();
+        }
+
+        $response['cart'] = $facture;
+    }
+
+    return response()->json($response);
+}
+
     public function cartDelete(Request $request)
     {
 
@@ -75,8 +93,10 @@ class OrderController extends Controller
         if ($request->ajax()) {
             if ($mode_paiement == 'paiement') {
                 $facture = view('admin.layouts._facture-list')->render();
-            } else {
+            } else if ($mode_paiement == 'deal') {
                 $facture = view('admin.layouts._deal-facture-list')->render();
+            } else if ($mode_paiement == 'acompte') {
+                $facture = view('admin.layouts._acompte-list')->render();
             }
             $response['cart'] = $facture;
         }
@@ -128,10 +148,14 @@ class OrderController extends Controller
 
         return view('admin.layouts._deal-facture-list', compact('subCategories'));
     }
+   
     public function acompteView()
     {
-        return view('admin.layouts._acompte-list');
+        $subCategories = SubCategory::with('categorie')->get();
+
+        return view('admin.layouts._acompte-list', compact('subCategories')); // Vérifiez bien le nom de la vue ici
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -167,7 +191,6 @@ class OrderController extends Controller
         $cart = Cart::instance('facture')->content();
         $total = Cart::subtotal(00, '', '') - $request->input('reduction');
         $status_save = false;
-
         // Définition des messages d'erreur personnalisés
         $messages = [
             'order_number.required' => 'Le numéro de commande est requis.',
@@ -194,9 +217,11 @@ class OrderController extends Controller
 
         // Construction du tableau des produits
         foreach ($cart as $product) {
+            $products['product_' . $i][] = $product->id;
             $products['product_' . $i][] = $product->name;
             $products['product_' . $i][] = $product->price;
             $products['product_' . $i][] = $product->qty;
+            $products['product_' . $i][] = $product->options->garantie ?? 'Non spécifiée'; // Ajout de la garantie
             $i++;
         }
 
@@ -220,23 +245,32 @@ class OrderController extends Controller
         // Validation des données
         $validator = Validator::make($data, [
             'order_number' => 'required|string|unique:orders,order_number',
+            
             'produits' => [
                 'required',
                 'json',
                 function ($attribute, $value, $fail) {
                     $decoded = json_decode($value, true);
-                    if (empty($decoded)) {
-                        $fail('Le champ produits ne doit pas être  vide.');
+                    if (!is_array($decoded) || empty($decoded)) {
+                        $fail('Le champ produits doit contenir une liste valide et ne doit pas être vide.');
                     }
                 },
             ],
+            
             'mode_achat' => 'required|in:deal,paiement,acompte',
             'prix_total' => 'required|numeric|min:500',
-            'nom' => 'required|string',
-            'prenoms' => 'nullable|string',
-            'email' => 'nullable',
-            'telephone' => ['required', 'regex:/^(\+?\d{1,3}|\d{1,4})?\d{7,}$/'],
+            
+            'nom' => 'required|string|max:255',
+            'prenoms' => 'nullable|string|max:255',
+            
+            'email' => 'nullable|email|max:255',
+            
+            'telephone' => [
+                'required',
+                'regex:/^(\+?\d{1,3}|\d{1,4})?\d{7,}$/', 
+            ],
         ], $messages);
+        
 
 
         // Si la validation échoue
@@ -245,10 +279,10 @@ class OrderController extends Controller
         }
 
         // Vérifier si le client existe déjà
-        $clientExiste = Client::where(
-            'nom',
-            $request->input('nom')
-        )->orWhere('prenoms', $request->input('prenoms'))->first();
+        $clientExiste = Client::where([
+            ['nom', '=', $request->input('nom')],
+            ['prenoms', '=', $request->input('prenoms')]
+        ])->first();
 
         // Si le client n'existe pas, le créer
         if (!$clientExiste) {
@@ -260,7 +294,7 @@ class OrderController extends Controller
             $status = $client->save();
 
             if (!$status) {
-                return dd('Erreur lors de la création du client');
+              return back()->with('error','Erreur lors de la création du client');
             }
 
             $clientExiste = $client;
@@ -271,6 +305,7 @@ class OrderController extends Controller
         $order->order_number = $data['order_number'];
         $order->client_id = $clientExiste->id;
         $order->reduction = $request->input('reduction');
+        $order->acompte = $request->input('acompte');
         $order->produits = $data['produits'];
         $order->prix_total = $data['prix_total'];
         $order->mode_achat = $data['mode_achat'];
@@ -312,11 +347,12 @@ class OrderController extends Controller
                     $productModel->save();
                 }
             }
-
+            Cart::instance('facture')->destroy();
             // Retourner un message de succès
-            return dd('La facture est sauvegardée avec succès, et les statuts des produits ont été mis à jour.');
-        } else {
-            return dd('Erreur lors de la sauvegarde de la facture');
+            return redirect()->route('factures.print', ['id' => $order->id])
+            ->with('success', 'Commande validée. Impression en cours...');        } else {
+            return back()->with('error','Erreur lors de la sauvegarde de la facture');
+
         }
     }
 
@@ -338,6 +374,14 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    public function print($id)
+    {
+        //
+        $facture = Order::with('client')->findOrFail($id);
+
+        return view('admin.ventes.print', compact('facture'));
+    }
+
     public function edit(Order $order)
     {
         //
@@ -346,9 +390,18 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $facture)
     {
-        //
+       $facture->acompte+=$request->input('acompte');
+       $status = $facture->update();
+       if ($status) {
+        return redirect()->route('factures.print', ['id' => $facture->id])
+        ->with('success', 'Commande validée. Impression en cours...');  
+       } else {
+       return back()->with('error','Erreur lors de la mise a jour de la facture');
+       }
+       
+
     }
 
     /**

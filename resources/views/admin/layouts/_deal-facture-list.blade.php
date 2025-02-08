@@ -24,7 +24,7 @@
                         produit deal
                     </button>
                 </td>
-                <td>{{ $item->qty }} Semaine(s)</td>
+                <td>{{ $item->options->garantie .'Semaine(s)' ?? 'Non spécifiée' }}</td>
 
                 <td id="total_tab">{{ $item->subtotal(0, ' ', ' ') }} fr</td>
             </tr>

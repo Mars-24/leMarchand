@@ -34,4 +34,10 @@ class DepenseController extends Controller
             # code...
         }
     }
+
+    public function liste()
+    {
+        $depenses = Depense::all();
+        return view('admin.depenses.liste',compact('depenses'));
+    }
 }

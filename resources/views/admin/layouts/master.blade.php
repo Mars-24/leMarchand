@@ -29,10 +29,10 @@
 
     <!-- FAVICON -->
     <link href="{{ asset('img/favicon.png') }}" rel="shortcut icon" />
-    	<!-- No Extra plugin used -->
+    <!-- No Extra plugin used -->
 
-	<link href="{{ asset('plugins/data-tables/datatables.bootstrap5.min.css') }}" rel='stylesheet'>
-	<link href="{{ asset('plugins/data-tables/responsive.datatables.min.css') }}" rel='stylesheet'>
+    <link href="{{ asset('plugins/data-tables/datatables.bootstrap5.min.css') }}" rel='stylesheet'>
+    <link href="{{ asset('plugins/data-tables/responsive.datatables.min.css') }}" rel='stylesheet'>
 
 </head>
 
@@ -44,126 +44,145 @@
         <!-- LEFT MAIN SIDEBAR -->
         <div class="ec-left-sidebar ec-bg-sidebar">
             <div id="sidebar" class="sidebar ec-sidebar-footer">
+                @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin')
+                    <div class="ec-brand">
+                        <a href="{{ route('admin.dashboard') }}" title="Ekka">
+                            <picture>
+                                <source srcset="{{ asset('img/logo/logo.webp') }} 1x" type="image/webp" />
+                                <img class="ec-brand-icon" src="{{ asset('img/logo/logo.png') }}" alt="" />
 
-                <div class="ec-brand">
-                    <a href="{{route('admin.dashboard')}}" title="Ekka">
-                        <img class="ec-brand-icon" src="{{ asset('img/logo/logo.png') }}" alt="" />
-                    </a>
-                </div>
-
+                            </picture>
+                        </a>
+                    </div>
+                @else
+                    <div class="ec-brand">
+                        <a href="{{ route('factures.create') }}" title="Ekka">
+                            <img class="ec-brand-icon" src="{{ asset('img/logo/logo.png') }}" alt="" />
+                        </a>
+                    </div>
+                @endif
                 <!-- begin sidebar scrollbar -->
                 <div class="ec-navigation" data-simplebar>
                     <!-- sidebar menu -->
                     <ul class="nav sidebar-inner" id="sidebar-menu">
-                        <!-- Dashboard -->
-                        <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                            <a class="sidenav-item-link" href="{{ route('admin.dashboard') }}">
-                                <i class="mdi mdi-view-dashboard-outline"></i>
-                                <span class="nav-text">Dashboard</span>
-                            </a>
-                            <hr>
-                        </li>
 
-                        <!-- Vendors -->
-                        <li class="{{ request()->routeIs('admin.fournisseur') ? 'active' : '' }}">
-                            <a class="sidenav-item-link" href="{{ route('admin.fournisseur') }}">
-                                <i class="mdi mdi-account-group-outline"></i>
-                                <span class="nav-text">Fournisseurs</span>
-                            </a>
-                            <hr>
-                        </li>
-                        <!-- Users -->
-                        <li class="has-sub {{ request()->routeIs('clients.index') ? 'active' : '' }}">
-                            <a class="sidenav-item-link" href="javascript:void(0)">
-                                <i class="mdi mdi-account-group"></i>
-                                <span class="nav-text">Clients</span> <b class="caret"></b>
-                            </a>
-                            <div class="collapse">
-                                <ul class="sub-menu" id="users" data-parent="#sidebar-menu">
+                        @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== 'normal')
 
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="{{ route('clients.index') }}">
-                                            <span class="nav-text">Liste des clients</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <hr>
-                        </li>
-                        <!-- Gestion d'access -->
-                        <li class="has-sub {{ request()->routeIs('admins.index') ? 'active' : '' }}">
-                            <a class="sidenav-item-link" href="javascript:void(0)">
-                                <i class="mdi mdi-account-group"></i>
-                                <span class="nav-text">Gestion d'access</span> <b class="caret"></b>
-                            </a>
-                            <div class="collapse">
-                                <ul class="sub-menu" id="users" data-parent="#sidebar-menu">
-                                   
+                            <!-- Dashboard -->
+                            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <a class="sidenav-item-link" href="{{ route('admin.dashboard') }}">
+                                    <i class="mdi mdi-view-dashboard-outline"></i>
+                                    <span class="nav-text">Dashboard</span>
+                                </a>
+                                <hr>
+                            </li>
 
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="{{route('admins.index')}}">
-                                            <span class="nav-text">Utilisateurs</span>
-                                        </a>
-                                    </li>
-                                   
-                                </ul>
-                            </div>
-                            <hr>
-                        </li>
+                            <!-- Vendors -->
+                            <li class="{{ request()->routeIs('admin.fournisseur') ? 'active' : '' }}">
+                                <a class="sidenav-item-link" href="{{ route('admin.fournisseur') }}">
+                                    <i class="mdi mdi-account-group-outline"></i>
+                                    <span class="nav-text">Fournisseurs</span>
+                                </a>
+                                <hr>
+                            </li>
+                            @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin')
+                                <!-- Users -->
+                                <li class="has-sub {{ request()->routeIs('clients.index') ? 'active' : '' }}">
+                                    <a class="sidenav-item-link" href="javascript:void(0)">
+                                        <i class="mdi mdi-account-group"></i>
+                                        <span class="nav-text">Clients</span> <b class="caret"></b>
+                                    </a>
+                                    <div class="collapse">
+                                        <ul class="sub-menu" id="users" data-parent="#sidebar-menu">
 
-                        <!-- Category -->
-                        <li class="has-sub  {{ request()->routeIs('categories.index')|| request()->routeIs('admin.categorie.subCategory')  ? 'active' : ''}}">
-                            <a class="sidenav-item-link" href="javascript:void(0)">
-                                <i class="mdi mdi-dns-outline"></i>
-                                <span class="nav-text">Categories</span> <b class="caret"></b>
-                            </a>
-                            <div class="collapse">
-                                <ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="{{ route('categories.index') }}">
-                                            <span class="nav-text">Catégorie</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="{{ route('admin.categorie.subCategory') }}">
-                                            <span class="nav-text">Sous Categorie</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                            <li class="">
+                                                <a class="sidenav-item-link" href="{{ route('clients.index') }}">
+                                                    <span class="nav-text">Liste des clients</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                </li>
+                                <!-- Gestion d'access -->
+                                <li class="has-sub {{ request()->routeIs('admins.index') ? 'active' : '' }}">
+                                    <a class="sidenav-item-link" href="javascript:void(0)">
+                                        <i class="mdi mdi-account-group"></i>
+                                        <span class="nav-text">Gestion d'access</span> <b class="caret"></b>
+                                    </a>
+                                    <div class="collapse">
+                                        <ul class="sub-menu" id="users" data-parent="#sidebar-menu">
 
-                        <!-- Products -->
-                        <li class="has-sub {{ request()->routeIs('produits.index')|| request()->routeIs('produits.create') || request()->routeIs('produits.edit') ? 'active' : ''}}">
-                            <a class="sidenav-item-link" href="javascript:void(0)">
-                                <i class="mdi mdi-palette-advanced"></i>
-                                <span class="nav-text">Produits</span> <b class="caret"></b>
-                            </a>
-                            <div class="collapse">
-                                <ul class="sub-menu" id="products" data-parent="#sidebar-menu">
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="{{ route('produits.index') }}">
-                                            <span class="nav-text">Liste des Produits</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a class="sidenav-item-link" href="{{ route('produits.create') }}">
-                                            <span class="nav-text">Ajouter Produit</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+
+                                            <li class="">
+                                                <a class="sidenav-item-link" href="{{ route('admins.index') }}">
+                                                    <span class="nav-text">Utilisateurs</span>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                </li>
+
+                                <!-- Category -->
+                                <li
+                                    class="has-sub  {{ request()->routeIs('categories.index') || request()->routeIs('admin.categorie.subCategory') ? 'active' : '' }}">
+                                    <a class="sidenav-item-link" href="javascript:void(0)">
+                                        <i class="mdi mdi-dns-outline"></i>
+                                        <span class="nav-text">Categories</span> <b class="caret"></b>
+                                    </a>
+                                    <div class="collapse">
+                                        <ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
+                                            <li class="">
+                                                <a class="sidenav-item-link" href="{{ route('categories.index') }}">
+                                                    <span class="nav-text">Catégorie</span>
+                                                </a>
+                                            </li>
+                                            <li class="">
+                                                <a class="sidenav-item-link"
+                                                    href="{{ route('admin.categorie.subCategory') }}">
+                                                    <span class="nav-text">Sous Categorie</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endif
+                            <!-- Products -->
+                            <li
+                                class="has-sub {{ request()->routeIs('produits.index') || request()->routeIs('produits.create') || request()->routeIs('produits.edit') ? 'active' : '' }}">
+                                <a class="sidenav-item-link" href="javascript:void(0)">
+                                    <i class="mdi mdi-palette-advanced"></i>
+                                    <span class="nav-text">Produits</span> <b class="caret"></b>
+                                </a>
+                                <div class="collapse">
+                                    <ul class="sub-menu" id="products" data-parent="#sidebar-menu">
+                                        <li class="">
+                                            <a class="sidenav-item-link" href="{{ route('produits.index') }}">
+                                                <span class="nav-text">Liste des Produits</span>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="sidenav-item-link" href="{{ route('produits.create') }}">
+                                                <span class="nav-text">Ajouter Produit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
 
                         <!-- Orders -->
-                        <li class="has-sub {{ request()->routeIs('factures.create')|| request()->routeIs('factures.index')  ? 'active' : ''}}">
+                        <li
+                            class="has-sub {{ request()->routeIs('factures.create') || request()->routeIs('factures.index') || request()->routeIs('factures.show') ? 'active' : '' }}">
                             <a class="sidenav-item-link" href="javascript:void(0)">
                                 <i class="mdi mdi-cart"></i>
                                 <span class="nav-text">Ventes</span> <b class="caret"></b>
                             </a>
                             <div class="collapse">
                                 <ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
-                                    <li class="">
+                                    <li class=" {{ request()->routeIs('factures.create') ? 'active' : '' }}">
                                         <a class="sidenav-item-link" href="{{ route('factures.create') }}">
                                             <span class="nav-text">Factures</span>
                                         </a>
@@ -176,7 +195,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="has-sub {{ request()->routeIs('depenses.index') ? 'active' : ''}}">
+                        <li class="has-sub {{ request()->routeIs('defectueux.index') ? 'active' : '' }}">
                             <a class="sidenav-item-link" href="javascript:void(0)">
                                 <i class="mdi mdi-cash"></i>
                                 <span class="nav-text">Produits defectueux</span> <b class="caret"></b>
@@ -189,7 +208,7 @@
                                         </a>
                                     </li> --}}
                                     <li class="">
-                                        <a class="sidenav-item-link" href="{{route('defectueux.index')}}">
+                                        <a class="sidenav-item-link" href="{{ route('defectueux.index') }}">
                                             <span class="nav-text">Liste des produits</span>
                                         </a>
                                     </li>
@@ -198,8 +217,9 @@
                             </div>
                         </li>
                         <!-- Depences-->
+                        @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== 'normal')
 
-                        <li class="has-sub {{ request()->routeIs('fonds.index') ? 'active' : ''}}">
+                        <li class="has-sub {{ request()->routeIs('fonds.index') ? 'active' : '' }}">
                             <a class="sidenav-item-link" href="javascript:void(0)">
                                 <i class="mdi mdi-cash"></i>
                                 <span class="nav-text">Fond de Caisse</span> <b class="caret"></b>
@@ -207,17 +227,18 @@
                             <div class="collapse">
                                 <ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
                                     <li class="">
-                                        <a class="sidenav-item-link" href="{{route('fonds.index')}}">
+                                        <a class="sidenav-item-link" href="{{ route('fonds.index') }}">
                                             <span class="nav-text">Ajouter Fond de caisse</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-
+@endif
                         <!-- Depences-->
                         {{-- <div class="i-mdi:cash-remove w-1em h-1em"></div> --}}
-                        <li class="has-sub {{ request()->routeIs('depenses.index') ? 'active' : ''}}">
+                        <li
+                            class="has-sub {{ request()->routeIs('depenses.index') || request()->routeIs('depense.liste') ? 'active' : '' }}">
                             <a class="sidenav-item-link" href="javascript:void(0)">
                                 <i class="mdi mdi-cash"></i>
                                 <span class="nav-text">Liste des Dépenses</span> <b class="caret"></b>
@@ -230,8 +251,8 @@
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a class="sidenav-item-link" href="order-history.html">
-                                            <span class="nav-text">Liste des Depenses</span>
+                                        <a class="sidenav-item-link" href="{{ route('depense.liste') }}">
+                                            <span class="nav-text">Liste</span>
                                         </a>
                                     </li>
 
@@ -254,7 +275,7 @@
                     <button id="sidebar-toggler" class="sidebar-toggle"></button>
                     <!-- search form -->
                     <div class="search-form d-lg-inline-block">
-                       
+
                     </div>
 
                     <!-- navbar right -->
@@ -282,7 +303,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <a href="{{route('admin.profil')}}">
+                                        <a href="{{ route('admin.profil') }}">
                                             <i class="mdi mdi-account"></i> Mon Profil
                                         </a>
                                     </li>
@@ -296,7 +317,7 @@
                                     </li>
                                 </ul>
                             </li>
-                           
+
                             <li class="right-sidebar-in right-sidebar-2-menu">
                                 <i class="mdi mdi-settings-outline mdi-spin"></i>
                             </li>
@@ -349,7 +370,9 @@
     <script src="{{ asset('js/ekka.js') }}"></script>
     <script>
         setTimeout(function() {
-            const errorDiv = document.getElementById('error-message');
+            const errorDiv = document.querySelector('.alert');
+            console.log('erreur :', errorDiv);
+
             if (errorDiv) {
                 // Déclenche la transition d'opacité
                 errorDiv.style.opacity = '0';
@@ -357,9 +380,9 @@
                 // Après la transition (1 seconde), masquer la div complètement
                 setTimeout(function() {
                     errorDiv.style.display = 'none';
-                }, 1000); // Délai égal à la durée de la transition d'opacité
+                }, 500); // Délai égal à la durée de la transition d'opacité
             }
-        }, 20000);
+        }, 5000);
     </script>
     @yield('script');
 </body>

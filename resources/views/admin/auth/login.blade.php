@@ -27,6 +27,7 @@
 		<div class="container d-flex align-items-center justify-content-center form-height-login pt-24px pb-24px">
 			<div class="row justify-content-center">
 				<div class="col-lg-6 col-md-10">
+					@include('admin.layouts.errors-infos')
 					<div class="card">
 						<div class="card-header bg-primary">
 							<div class="ec-brand">
@@ -36,6 +37,7 @@
 								</a>
 							</div>
 						</div>
+					
 						<div class="card-body p-5">
 							<h4 class="text-dark mb-5">Connexion</h4>
 							

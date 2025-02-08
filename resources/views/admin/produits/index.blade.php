@@ -44,7 +44,7 @@
                                                     @if ($produit->photo)
                                                         <img  class="tbl-thumb" src="{{ asset('storage/' . $produit->photo) }}" alt="Product Image">
                                                     @else
-                                                        <img class="tbl-thumb" src="{{asset('img/products/p6.jpg')}}"
+                                                        <img class="tbl-thumb" src="{{asset($produit->subcategory->categorie->photo)}}"
                                                             alt="Product Image" />
                                                 </td>
                                         @endif
@@ -61,7 +61,23 @@
                                         </td>
                                         <td>{{ $produit->fournisseur->nom }} {{ $produit->fournisseur->prenoms }}
                                         </td>
-                                        <td>{{ $produit->status }}</td>
+                                        <td>
+                                            @if ($produit->status=='obselete')
+                                            <span class="mb-2 mr-2 badge badge-danger">Obselete</span>
+                                            @endif
+                                            @if ($produit->status=='vendu')
+                                            <span class="mb-2 mr-2 badge badge-primary">Vendu</span>
+                                            @endif
+                                            @if ($produit->status=='deal')
+                                            <span class="mb-2 mr-2 badge badge-primary">Deal</span>
+                                            @endif
+                                            @if ($produit->status=='reparation')
+                                            <span class="mb-2 mr-2 badge badge-warning">Reparation</span>
+                                            @endif
+                                            @if ($produit->status=='en_stock')
+                                            <span class="mb-2 mr-2 badge badge-success">En stock</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="btn-group mb-1">
                                                 <button type="button" class="btn btn-outline-success">Info</button>

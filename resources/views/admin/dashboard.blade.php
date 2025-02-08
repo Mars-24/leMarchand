@@ -172,9 +172,7 @@
                 <div class="card card-table-border-none card-default recent-orders" id="recent-orders">
                     <div class="card-header justify-content-between">
                         <h2>Commandes récentes</h2>
-                        <div class="date-range-report">
-                            <span></span>
-                        </div>
+                      
                     </div>
                     <div class="card-body pt-0 pb-5">
                         <div class="table-responsive">
@@ -207,12 +205,15 @@
                                         <td>{{$vente->prix_total}}</td>
                                         <td>{{$vente->mode_achat}}</td>
                                         <td>
-                                            @if ($vente->mode_achat=='acompte')
+                                            @if ($vente->mode_achat == 'acompte' && $vente->acompte < $vente->prix_total)
                                             <span class="mb-2 mr-2 badge badge-danger">Acompte</span>
-                                            @endif
-                                            @if ($vente->mode_achat=='paiement')
+                                        @elseif ($vente->mode_achat == 'deal')
+                                            <span class="mb-2 mr-2 badge badge-primary">Deal</span>
+                                        @elseif($vente->mode_achat == 'paiement')
                                             <span class="mb-2 mr-2 badge badge-success">Vendu</span>
-                                            @endif                                        
+                                        @else
+                                            <span class="mb-2 mr-2 badge badge-success">Vendu</span>
+                                        @endif                                 
                                         </td>
                                         <td>{{$vente->created_at->format('d-m-Y')}}</td>
                                         <td>
@@ -228,7 +229,6 @@
 
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{route('factures.show',$vente->id)}}">Detail</a>
-                                                    <a class="dropdown-item" href="#">Track</a>
                                                     <a class="dropdown-item" href="#">Cancel</a>
                                                 </div>
                                             </div>

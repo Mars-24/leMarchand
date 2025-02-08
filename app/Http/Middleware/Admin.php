@@ -18,11 +18,29 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::guard('admin')->check()){
+        $user = Auth::guard('admin')->user();
+    
+        if ($user) {
+            // Vérifier si l'utilisateur a un rôle limité
+            if ($user->role === 'normal') {
+                // Liste des routes interdites aux admins avec rôle limité
+                $restrictedRoutes = [
+                    'admin.dashboard', 
+                    'admin.fournisseur',
+                    'fonds.index',
+                    'clients.index',
+                    'produits.index'
+                ];
+    
+                if (in_array($request->route()->getName(), $restrictedRoutes)) {
+                    return redirect()->route('admin.connexion')->with('error', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
+                }
+            }
+    
             return $next($request);
-
-        }else {
-            return redirect()->route('admin.connexion');
         }
+    
+        return redirect()->route('admin.connexion');
     }
+    
 }
