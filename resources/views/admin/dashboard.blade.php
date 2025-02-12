@@ -102,21 +102,21 @@
                             role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#todays" role="tab"
-                                    aria-selected="true">Today's</a>
+                                    aria-selected="true">Aujourd'hui</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#monthly" role="tab"
-                                    aria-selected="false">Monthly </a>
+                                    aria-selected="false">Mensuelle </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#yearly" role="tab"
-                                    aria-selected="false">Yearly</a>
+                                    aria-selected="false">Annuelle</a>
                             </li>
                         </ul>
                         <div class="tab-content pt-4" id="salesReport">
                             <div class="tab-pane fade show active" id="source-medium" role="tabpanel">
                                 <div class="mb-6" style="max-height:247px">
-                                    <canvas id="acquisition" class="chartjs2"></canvas>
+                                    <canvas id="salesChart" class="chartjs2"></canvas>
                                     <div id="acqLegend" class="customLegend mb-2"></div>
                                 </div>
                             </div>
@@ -387,4 +387,79 @@
         </div>
     </div> <!-- End Content -->
 </div> <!-- End Content Wrapper -->
+@endsection
+@section('script')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Récupération des données PHP dans JavaScript
+        var salesThisMonth = {!! json_encode($salesThisMonth) !!};
+        var salesThisYear = {!! json_encode($salesThisYear) !!};
+
+        // Transformation des données en tableaux JavaScript exploitables
+        var monthlyLabels = salesThisMonth.map(sale => sale.date);
+        var monthlyData = salesThisMonth.map(sale => sale.total_ventes);
+
+        var yearlyLabels = salesThisYear.map(sale => sale.date);
+        var yearlyData = salesThisYear.map(sale => sale.total_ventes);
+
+        // Configuration de base du graphique
+        var ctx = document.getElementById("salesChart").getContext("2d");
+        var salesChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: monthlyLabels, // Affichage par défaut: ventes du mois
+                datasets: [{
+                    label: "Nombre de ventes",
+                    backgroundColor: "rgba(52, 116, 212, .3)",
+                    borderColor: "rgba(52, 116, 212, .7)",
+                    data: monthlyData,
+                    lineTension: 0.3,
+                    pointBackgroundColor: "rgba(52, 116, 212, 0)",
+                    pointHoverBackgroundColor: "rgba(52, 116, 212, 1)",
+                    pointHoverRadius: 3,
+                    pointHitRadius: 30,
+                    pointBorderWidth: 2,
+                    pointStyle: "rectRounded"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: { display: false },
+                scales: {
+                    x: {
+                        grid: { display: false }
+                    },
+                    y: {
+                        grid: { color: "#eee", zeroLineColor: "#eee" },
+                        ticks: { beginAtZero: true, stepSize: 5 }
+                    }
+                }
+            }
+        });
+
+        // Gestion des onglets pour changer les données du graphique
+        document.querySelectorAll(".nav-link").forEach(function (tab, index) {
+            tab.addEventListener("click", function () {
+                if (index === 0) { // Aujourd'hui (non géré ici car pas de données précises par heure)
+                    salesChart.data.labels = monthlyLabels;
+                    salesChart.data.datasets[0].data = monthlyData;
+                } else if (index === 1) { // Mensuel
+                    salesChart.data.labels = monthlyLabels;
+                    salesChart.data.datasets[0].data = monthlyData;
+                } else if (index === 2) { // Annuel
+                    salesChart.data.labels = yearlyLabels;
+                    salesChart.data.datasets[0].data = yearlyData;
+                }
+                salesChart.update();
+            });
+        });
+    });
+</script>
+
+
+  <!-- Datatables -->
+  <script src="{{ asset('plugins/data-tables/jquery.datatables.min.js') }}"></script>
+  <script src="{{ asset('/plugins/data-tables/datatables.bootstrap5.min.js') }}"></script>
+  <script src="{{ asset('plugins/data-tables/datatables.responsive.min.js') }}"></script>
 @endsection

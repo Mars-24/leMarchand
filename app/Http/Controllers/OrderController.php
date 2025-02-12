@@ -407,8 +407,18 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        //
+        $vente = Order::find($id);
+        if ($vente) {
+            $status = $vente->delete();
+            if ($status) {
+                return redirect()->route('factures.index')->with('success', 'suppression de la facture');
+            } else {
+                return redirect()->route('factures.index')->with('error', 'Erreur lors de la suppression de la facture');
+            }
+        } else {
+            return back()->with('error', 'facture non trouvé');
+        };
     }
 }

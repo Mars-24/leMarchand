@@ -126,7 +126,7 @@
             e.preventDefault();
             swal({
                     title: "êtes vous sure?",
-                    text: "OUne fois supprimé,vous ne pouvez plus recuperer le fichier!",
+                    text: "Une fois supprimé,vous ne pouvez plus recuperer le fichier!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,

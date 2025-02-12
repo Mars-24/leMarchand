@@ -4,7 +4,7 @@
         <div class="text-center print-section">
             <h3 class="text-dark font-weight-medium text-center">Le Marchand</h3>
             <p>Agbalepedo,Rond Point Oeuf près du marché cacaveli</p>
-            <p>Tél: +228 92 86 06 75</p>
+            <p>Tél: +228 92 86 06 75 / +228 97 38 98 86</p>
         </div>
 
         <div class="row pt-5">

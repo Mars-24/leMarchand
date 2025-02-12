@@ -9,6 +9,8 @@
                     <span><i class="mdi mdi-chevron-right"></i></span>Historique
                 </p>
             </div>
+            @include('admin.layouts.errors-infos')
+
             <div class="row">
                 <div class="col-12">
                     <div class="card card-default">
@@ -75,7 +77,14 @@
                                                                 href="{{ route('factures.show', $vente->id) }}">Detail</a>
                                                             <a class="dropdown-item"
                                                                 href="{{ route('factures.print', $vente->id) }}">Imprimer</a>
-                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                                <form action="{{ route('factures.destroy', $vente->id) }}" style="cursor: pointer"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                <a class="dropdown-item btn-delete-icon"  data-id="{{ $vente->id }}">Supprimer</a>
+                                                            </form>
+
+                                                            <a class="dropdown-item"  href="#">Annuler</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -95,6 +104,35 @@
     </div> <!-- End Content Wrapper -->
 @endsection
 @section('script')
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $('.btn-delete-icon').click(function(e) {
+        var form = $(this).closest('form');
+        var dataID = $(this).data('id');
+        e.preventDefault();
+        swal({
+                title: "êtes vous sure?",
+                text: "Une fois supprimé,vous ne pouvez plus recuperer le fichier!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Poof! le client à été supprimé!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Suppression annulée");
+                }
+            });
+    });
+</script>
     <!-- Datatables -->
     <script src="{{ asset('plugins/data-tables/jquery.datatables.min.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/datatables.bootstrap5.min.js') }}"></script>
