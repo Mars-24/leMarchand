@@ -23,7 +23,6 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             "nom"=>"required|string",
-            "description"=>"required|string",
             "photo"=>"required|mimes:png,jpg",
         ];
     }
@@ -32,7 +31,6 @@ class StoreCategoryRequest extends FormRequest
     {
         return[
             "nom.required"=>"Veuillez entrer un nom",
-            "description.required"=>"Veuillez entrer une description",
             "photo.required"=>"Veuillez ajouter une photo",
             "photo.mimes"=>"Veuillez entrer un format de photo valide(png,jpg)",
         ];

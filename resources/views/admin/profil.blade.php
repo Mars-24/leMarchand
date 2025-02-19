@@ -14,6 +14,8 @@
 					<a href="#" class="btn btn-primary">Editer</a>
 				</div>
 			</div>
+			@include('admin.layouts.errors-infos')
+
 			<div class="card bg-white profile-content">
 				<div class="row">
 					<div class="col-lg-4 col-xl-3">
@@ -64,7 +66,6 @@
                                     <div class="tab-pane-content mt-5">
                                         <form method="POST" action="{{route('update.profil')}}">
                                             @csrf
-											
                                             <div class="row mb-2">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -96,24 +97,24 @@
 													<span class="text-danger">{{ $message }}</span>
 												@enderror
 											</div>
-										
+											
 											<div class="form-group mb-4">
 												<label for="password">Nouveau mot de passe</label>
-												<input type="password" class="form-control @error('password') is-invalid @enderror" id="newPassword" name="password">
+												<input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
 												@error('password')
 													<span class="text-danger">{{ $message }}</span>
 												@enderror
 											</div>
-										
+											
 											<div class="form-group mb-4">
-												<label for="newPassword_confirmation">Confirmez mot de passe</label>
-												<input type="password" class="form-control" id="newPassword_confirmation" name="newPassword_confirmation">
+												<label for="password_confirmation">Confirmez le mot de passe</label>
+												<input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
 											</div>
-
-                                            <div class="d-flex justify-content-end mt-5">
-                                                <button type="submit" class="btn btn-primary mb-2 btn-pill">Mettre à jour
-                                                    Profil</button>
-                                            </div>
+											
+											<div class="d-flex justify-content-end mt-5">
+												<button type="submit" class="btn btn-primary mb-2 btn-pill">Mettre à jour Profil</button>
+											</div>
+											
                                         </form>
                                     </div>
                                 </div>

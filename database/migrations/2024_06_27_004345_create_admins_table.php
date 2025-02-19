@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('telephone')->unique()->nullable();
             $table->string('adresse')->nullable();
             $table->string('password');
-            $table->enum('role',['normal','admin','gerant'])->default('normal');
+            $table->enum('role',['normal','admin','gerant','otr'])->default('normal');
             $table->enum('status',['actif','inactif'])->default('actif');
             $table->timestamps();
         });

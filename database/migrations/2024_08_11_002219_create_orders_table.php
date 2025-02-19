@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id')->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
-            $table->foreign('produit_id')->references('id')->on('produits')->onDelete('set null');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('Cascade');
+            $table->foreign('produit_id')->references('id')->on('produits')->onDelete('Cascade');
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('set null');
             $table->timestamps();
         });

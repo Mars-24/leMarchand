@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Client;
+use App\Models\Fournisseur;
 use App\Models\Order;
 use App\Models\Produit;
 use App\Models\SubCategory;
@@ -53,8 +54,8 @@ class OrderController extends Controller
         )->associate('App\Models\Produit');
 
         // Ajouter la garantie
-        Cart::instance('facture')->update($result->rowId, ['options' => ['garantie' => $product[0]['garantie'] ?? "1"]]);
-
+        Cart::instance('facture')->update($result->rowId, ['options' => [ 'garantie' => $product[0]['garantie'] ?? "1",
+        'prix_achat' => $product[0]['prix_achat'], 'prix_minimum' => $product[0]['prix_minimum']]]);
         if ($result) {
             $response['status'] = true;
             $response['message'] = "Produit ajouté à la facture.";
@@ -112,9 +113,14 @@ class OrderController extends Controller
         $price = $request->input('price');
         $mode_paiement = $request->input('mode_buy');
         // return dd($mode_paiement);
-
+        $item = Cart::instance('facture')->get($rowId);
+        $prix_achat = $item->options->prix_minimum ?? 0;
+        
         if ($price < 1) {
             $message = "Vous ne pouvez pas ajouter un produit avec un prix inferieur a 1";
+            $response['status'] = false;
+        }elseif ($price < $prix_achat) {
+            $message = "Vous ne pouvez pas ajouter un produit avec un prix inferieur au prix minimum";
             $response['status'] = false;
         } else {
             Cart::instance('facture')->update($rowId, ['price' => $price]);
@@ -222,6 +228,8 @@ class OrderController extends Controller
             $products['product_' . $i][] = $product->price;
             $products['product_' . $i][] = $product->qty;
             $products['product_' . $i][] = $product->options->garantie ?? 'Non spécifiée'; // Ajout de la garantie
+            $products['product_' . $i][] = $product->options->prix_achat; // Ajout de la garantie
+
             $i++;
         }
 
@@ -312,27 +320,35 @@ class OrderController extends Controller
 
         // Sauvegarder la commande
         $status_save = $order->save();
-        // Vérifier si la sauvegarde a réussi
-        // if ($status_save) {
-        //     return dd('La facture est sauvegardée avec succès');
-        // } else {
-        //     return dd('Erreur lors de la sauvegarde de la facture');
-        // }
-
+     
         if ($status_save) {
             // Mettre à jour le statut des produits
             if ($data['mode_achat'] == 'deal') {
+                $fournisseurExiste = Fournisseur::where([
+                    ['nom', '=', $request->input('nom')],
+                    ['prenoms', '=', $request->input('prenoms')]
+                ])->first();
+                if (!$fournisseurExiste) {
+                $fournisseur = new Fournisseur();
+                $fournisseur->nom = $request->input('nom');
+                $fournisseur->prenoms = $request->input('prenoms');
+                $fournisseur->email = $request->input('email');
+                $fournisseur->telephone = $request->input('phone');
+                $status = $fournisseur->save();
+                $fournisseurExiste=$fournisseur;
+                }
                 $produit = new Produit();
                 $produit->prix_achat = $request->input('prix_achat');
                 $produit->prix_vente = $request->input('prix_vente');
                 $produit->prix_minimum = $request->input('prix_minimum');
                 $produit->model = $request->input('model');
                 $produit->subcategory_id = $request->input('subcategory_id');
+                $produit->fournisseur_id = $fournisseurExiste->id;
                 $produit->quantite = 1;
                 $produit->status = 'en_stock';
                 $produit->provenance = 'deal';
                 do {
-                    $code_bar = Str::random(10); // Génère un code aléatoire de 10 caractères
+                    $code_bar = Str::random(5); // Génère un code aléatoire de 10 caractères
                 } while (Produit::where('code_bar', $code_bar)->exists());
                 $produit->code_bar = $code_bar;
                 $status = $produit->save();

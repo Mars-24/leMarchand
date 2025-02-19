@@ -54,6 +54,16 @@
                             </picture>
                         </a>
                     </div>
+                    @elseif (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'otr')
+                    <div class="ec-brand">
+                        <a href="{{ route('admin.otr.dashboard') }}" title="Ekka">
+                            <picture>
+                                <source srcset="{{ asset('img/logo/logo.webp') }} 1x" type="image/webp" />
+                                <img class="ec-brand-icon" src="{{ asset('img/logo/logo.png') }}" alt="" />
+
+                            </picture>
+                        </a>
+                    </div>
                 @else
                     <div class="ec-brand">
                         <a href="{{ route('factures.create') }}" title="Ekka">
@@ -67,15 +77,25 @@
                     <ul class="nav sidebar-inner" id="sidebar-menu">
 
                         @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== 'normal')
-
-                            <!-- Dashboard -->
+                            @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'otr')
+                            <li class="{{ request()->routeIs('admin.otr.dashboard') ? 'active' : '' }}">
+                                <a class="sidenav-item-link" href="{{ route('admin.otr.dashboard') }}">
+                                    <i class="mdi mdi-view-dashboard-outline"></i>
+                                    <span class="nav-text">Dashboard</span>
+                                </a>
+                                <hr>
+                            </li> 
+                               @else
+                                <!-- Dashboard -->
                             <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                 <a class="sidenav-item-link" href="{{ route('admin.dashboard') }}">
                                     <i class="mdi mdi-view-dashboard-outline"></i>
                                     <span class="nav-text">Dashboard</span>
                                 </a>
                                 <hr>
-                            </li>
+                            </li> 
+                            @endif
+                           
 
                             <!-- Vendors -->
                             <li class="{{ request()->routeIs('admin.fournisseur') ? 'active' : '' }}">

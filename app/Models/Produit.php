@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Produit extends Model
 {
     use HasFactory;
-    protected $fillable =['model','photo','prix_achat','prix_vente','prix_minimum','quantite','garantie','status','code_bar','fournisseur_id','subcategory_id'];
+    protected $fillable =['model','photo','imei','prix_achat','prix_vente','prix_minimum','quantite','garantie','status','code_bar','fournisseur_id','subcategory_id'];
 
     public static function getProduit($id){
         return self::where('id', $id)->with('subcategory')->get()->toArray();

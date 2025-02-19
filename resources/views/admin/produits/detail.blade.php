@@ -70,6 +70,8 @@
                                             </div>
                                             <p class="product-price">Prix minimum de vente: {{ $produit->prix_minimum }} CFA
                                             </p>
+                                            <p class="product-price">Imei: {{ $produit->imei }}
+                                            </p>
                                             <ul class="product-size">
                                                 <li class="size" onclick="printBarcode()"><span>Imprimer Code Bar</span>
                                                 </li>

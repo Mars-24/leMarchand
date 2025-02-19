@@ -17,10 +17,19 @@ class AdminSeeder extends Seeder
             'id'=>1,
             'nom'=>'le marchand',
             'prenoms'=>'yannick',
-            'email'=>'admin@gmail.com',
+            'email'=>'lemarchand228@gmail.com',
             'role'=>'admin',
             'status'=>'actif',
-            'password'=>Hash::make('Lemarchand,,;@24'),
+            'password'=>Hash::make('gestion2025'),
+        ]);
+        DB::table('admins')->insertOrIgnore([
+            'id'=>2,
+            'nom'=>'le marchand',
+            'prenoms'=>'yannick',
+            'email'=>'admin@gmail.com',
+            'role'=>'otr',
+            'status'=>'actif',
+            'password'=>Hash::make('gestion2025'),
         ]);
     }
 }

@@ -23,7 +23,7 @@
                         id="price-input-{{ $item->rowId }}" value="{{ $item->price }}" name="price"> fr
 
                 </td>
-                <td>{{ $item->options->garantie .'Semaine(s)' ?? 'Non spécifiée' }} </td>
+                <td>{{ $item->options->garantie .'Jour(s)' ?? 'Non spécifiée' }} </td>
 
                 <td class="del-btn">{{ $item->subtotal(0, ' ', ' ') }} fr</td>
             </tr>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->double('prix_achat')->default(0);
             $table->double('prix_vente')->default(0);
+            $table->string('imei');
             $table->double('prix_minimum')->default(0);
             $table->integer('quantite')->default(1);
             $table->integer('garantie')->default(1);

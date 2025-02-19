@@ -22,13 +22,20 @@ class StoreSubCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "nom"=>"required|string"
+            "nom"=>"required|string",        
+            'categorie_id' => 'required|exists:categories,id'
+
         ];
     }
     public function messages()
     {
         return[
-            "nom.required"=>"Veuillez ajouter un nom a la sous categorie",
+            'nom.required' => 'Le nom de la sous-catégorie est obligatoire.',
+        'nom.string' => 'Le nom doit être une chaîne de caractères valide.',
+        'nom.max' => 'Le nom ne doit pas dépasser 255 caractères.',
+        'nom.unique' => 'Ce nom de sous-catégorie existe déjà.',
+        'categorie_id.required' => 'La catégorie est obligatoire.',
+        'categorie_id.exists' => 'La catégorie sélectionnée n\'existe pas.',
         ];
     }
 }

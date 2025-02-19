@@ -6,13 +6,15 @@
             <div class="breadcrumb-wrapper breadcrumb-contacts">
                 <div>
                     <h1>Profil du admin</h1>
-                    <p class="breadcrumbs"><span><a href="{{route('admin.dashboard')}}">Acceuil</a></span>
+                    <p class="breadcrumbs"><span><a href="{{ route('admin.dashboard') }}">Acceuil</a></span>
                         <span><i class="mdi mdi-chevron-right"></i></span>Profil
                     </p>
                 </div>
                 <div>
                 </div>
             </div>
+            @include('admin.layouts.errors-infos')
+
             <div class="card bg-white profile-content">
                 <div class="row">
                     <div class="col-lg-4 col-xl-3">
@@ -111,7 +113,8 @@
                                                     </div>
 
                                                     <div class="media-body align-self-center">
-                                                        <h4 class="text-primary mb-2" data-role="admin">Rôle Administrateur</h4>
+                                                        <h4 class="text-primary mb-2" data-role="admin">Rôle Administrateur
+                                                        </h4>
                                                         @if ($admin->role == 'admin')
                                                             <p>Rôle Actuel</p>
                                                         @else
@@ -128,22 +131,8 @@
 
                                 <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                                     <div class="tab-pane-content mt-5">
-                                        <form>
-                                            <div class="form-group row mb-6">
-                                                <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">User
-                                                    Image</label>
-                                                <div class="col-sm-8 col-lg-10">
-                                                    <div class="custom-file mb-1">
-                                                        <input type="file" class="custom-file-input" id="coverImage"
-                                                            required>
-                                                        <label class="custom-file-label" for="coverImage">Choose
-                                                            file...</label>
-                                                        <div class="invalid-feedback">Example invalid custom
-                                                            file feedback</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                        <form method="POST" action="{{ route('admin.profil.update.other', $admin->id) }}">
+                                            @csrf
                                             <div class="row mb-2">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -161,26 +150,43 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row mb-2">
 
-                                            <div class="form-group mb-4">
-                                                <label for="email">Email</label>
-                                                <input type="email" class="form-control" id="email" name="email"
-                                                    value="{{ $admin->email }}">
+                                            <div class="col-lg-6">
+
+                                                <div class="form-group mb-4">
+                                                    <label for="email">Email</label>
+                                                    <input type="email" class="form-control" id="email"
+                                                        name="email" value="{{ $admin->email }}">
+                                                </div>
                                             </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-4">
+                                                    <label for="role">Rôle</label>
+                                                    <select id="parent-category" name="role" class="form-control">
+                                                        <option value="{{ $admin->role }}">Type rôle</option>
+                                                        <option value="normal">Normal</option>
+                                                        <option value="gerant">Gérant</option>
+                                                        <option value="admin">Admin</option>
 
-                                            <div class="form-group mb-4">
-                                                <label for="oldPassword">Ancien mot de passe</label>
-                                                <input type="password" class="form-control" id="oldPassword">
+                                                    </select>
+                                                </div>
                                             </div>
-
+                                            </div>
+                                            @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== 'admin')
+                                                <div class="form-group mb-4">
+                                                    <label for="oldPassword">Ancien mot de passe</label>
+                                                    <input type="password" class="form-control" id="oldPassword" name="oldPassword.">
+                                                </div>
+                                            @endif
                                             <div class="form-group mb-4">
                                                 <label for="newPassword">Nouveau mot de passe</label>
-                                                <input type="password" class="form-control" id="newPassword">
+                                                <input type="password" class="form-control" id="newPassword" name="password" required>
                                             </div>
 
                                             <div class="form-group mb-4">
                                                 <label for="conPassword">Confirmez mot de passe</label>
-                                                <input type="password" class="form-control" id="conPassword">
+                                                <input type="password" class="form-control" id="conPassword" name="password_confirmation" required>
                                             </div>
 
                                             <div class="d-flex justify-content-end mt-5">
@@ -201,5 +207,4 @@
     </div> <!-- End Content Wrapper -->
 @endsection
 @section('script')
-    
 @endsection

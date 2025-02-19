@@ -76,6 +76,10 @@
                                                 <label for="inputEmail4" class="form-label">Model Produit</label>
                                                 <input type="text" class="form-control slug-title" id="inputEmail4" name="model">
                                             </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Imei</label>
+                                                <input type="text" class="form-control" id="price1" name="imei"> 
+                                            </div>
 											<div class="col-md-6">
                                                 <label class="form-label">Prix d'achat <span>( En CFA
                                                         )</span></label>
@@ -92,7 +96,7 @@
                                                 <input type="number" class="form-control" id="price3" name="prix_minimum">
                                             </div>
 											<div class="col-md-6">
-                                                <label class="form-label">Ganrantie <span>(En semaine)</span> </label>
+                                                <label class="form-label">Garantie <span>(En jours)</span> </label>
                                                 <input type="number" class="form-control" id="garantie1" name="garantie" max="12"/>
                                             </div>
 											<div class="col-md-6">

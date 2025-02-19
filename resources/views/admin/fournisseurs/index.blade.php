@@ -91,20 +91,7 @@
 												</div>
 		
 												<div class="d-flex justify-content-between ">
-													<div class="text-center pb-4">
-														<h6 class="text-dark pb-2">354</h6>
-														<p>Achat effectuer</p>
-													</div>
-		
-													{{-- <div class="text-center pb-4">
-														<h6 class="text-dark pb-2">30</h6>
-														<p>Wish List</p>
-													</div>
-		
-													<div class="text-center pb-4">
-														<h6 class="text-dark pb-2">1200</h6>
-														<p>Following</p>
-													</div> --}}
+								
 												</div>
 											</div>
 										</div>
@@ -116,10 +103,6 @@
 												<p>{{$fournisseur->email}}</p>
 												<p class="text-dark font-weight-medium pt-4 mb-2">Numero de telephone</p>
 												<p>{{$fournisseur->telephone}}</p>
-												{{-- <p class="text-dark font-weight-medium pt-4 mb-2">Birthday</p>
-												<p>Dec 10, 1991</p>
-												<p class="text-dark font-weight-medium pt-4 mb-2">Address</p>
-												<p>123/2, Kings fort street-2, Polo alto, US.</p> --}}
 											</div>
 										</div>
 									</div>

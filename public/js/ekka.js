@@ -340,9 +340,4 @@ $(document).ready(function () {
 		var slug = $(this).val();
 		generate_slug(slug);
 	});
-	
-	var d = new Date();
-	var year = d.getFullYear();
-	document.getElementById("ec-year").innerHTML = year;
-
 });

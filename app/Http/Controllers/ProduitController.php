@@ -73,7 +73,7 @@ class ProduitController extends Controller
                 }
                 $data['photo'] = $photo_name;
                 do {
-                    $code_bar = Str::random(10); // Génère un code aléatoire de 10 caractères
+                    $code_bar = Str::random(5); // Génère un code aléatoire de 10 caractères
                 } while (Produit::where('code_bar', $code_bar)->exists()); // Assure l'unicité du code
 
                 $data['code_bar'] = $code_bar;

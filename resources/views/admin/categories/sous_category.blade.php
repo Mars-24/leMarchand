@@ -72,7 +72,7 @@
                                             <tr>
                                                 <td>
                                                     <img class="cat-thumb"
-                                                        src="{{ asset($subcategorie->categorie->photo) }}"
+                                                        src="{{ asset('storage/' .$subcategorie->categorie->photo) }}"
                                                         alt="product image" />
                                                 </td>
                                                 <td>{{ $subcategorie->nom }}</td>

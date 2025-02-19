@@ -27,6 +27,8 @@
                                             <th>Produit</th>
                                             <th>Nom</th>
                                             <th>Model</th>
+                                            <th>Imei</th>
+                                            <th>Provenance</th>
                                             <th>Prix de vente</th>
 											<th>Prix d'achat</th>
                                             <th>Prix Minimuim</th>
@@ -44,16 +46,18 @@
                                                     @if ($produit->photo)
                                                         <img  class="tbl-thumb" src="{{ asset('storage/' . $produit->photo) }}" alt="Product Image">
                                                     @else
-                                                        <img class="tbl-thumb" src="{{asset($produit->subcategory->categorie->photo)}}"
+                                                        <img class="tbl-thumb" src="{{asset('storage/' .$produit->subcategory->categorie->photo)}}"
                                                             alt="Product Image" />
                                                 </td>
                                         @endif
                                         <td>{{ $produit->subcategory->nom }}</td>
                                         <td>{{ $produit->model }}</td>
+                                        <td>{{ $produit->imei }}</td>
+                                        <td>{{ $produit->provenance }}</td>
                                         <td>{{ number_format($produit->prix_vente,'0',',','.') }} fr</td>
 										<td>{{ number_format($produit->prix_achat,'0',',','.') }} fr</td>
                                         <td>{{ number_format($produit->prix_minimum,'0',',','.') }} fr</td>
-                                        <td onclick="window.print()">
+                                        <td>
                                             @php
                                                 $barcode = new \Milon\Barcode\DNS1D();
                                             @endphp

@@ -91,10 +91,10 @@
 												</div>
 		
 												<div class="d-flex justify-content-between ">
-													<div class="text-center pb-4">
+													{{-- <div class="text-center pb-4">
 														<h6 class="text-dark pb-2">354</h6>
 														<p>Achat effectuer</p>
-													</div>
+													</div> --}}
 		
 													{{-- <div class="text-center pb-4">
 														<h6 class="text-dark pb-2">30</h6>

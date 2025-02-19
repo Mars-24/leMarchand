@@ -18,20 +18,17 @@ class CategorySeeder extends Seeder
             'id'=>1,
             'nom'=>'Téléphones',
             'photo'=>'telephone.jpeg',
-            'description'=>'Catégorie englobant tout les produits téléphoniques',
 
         ]);
         DB::table('categories')->insertOrIgnore([
             'id'=>2,
             'nom'=>'Ordinateurs',
             'photo'=>'ordinateur.jpeg',
-            'description'=>'Catégorie englobant tout les Ordinateurs',
         ]);
         DB::table('categories')->insertOrIgnore([
             'id'=>3,
             'nom'=>'Accessoires',
             'photo'=>'accessoire.jpeg',
-            'description'=>'Catégorie englobant tout les accessoires',
         ]);
     }
 }

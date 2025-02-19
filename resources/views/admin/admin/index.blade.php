@@ -16,7 +16,8 @@
                     </button>
                 </div>
             </div>
- 
+            @include('admin.layouts.errors-infos')
+
             <div class="row">
                 @foreach ($admins as $admin)
                     <div class="col-lg-6 col-xl-4 mb-24px">
@@ -153,7 +154,7 @@
                                         <div class="form-group">
                                             <label for="firstName">Nom</label>
                                             <input type="text" name="nom" class="form-control" id="firstName"
-                                                placeholder="John">
+                                                placeholder="John" required>
                                         </div>
                                     </div>
 
@@ -161,7 +162,7 @@
                                         <div class="form-group">
                                             <label for="lastName">Prenoms</label>
                                             <input type="text" name="prenoms" class="form-control" id="lastName"
-                                                placeholder="Deo">
+                                                placeholder="Deo" required>
                                         </div>
                                     </div>
 
@@ -177,7 +178,7 @@
                                         <div class="form-group mb-4">
                                             <label for="email">Email</label>
                                             <input type="email" name="email" class="form-control" id="email"
-                                                placeholder="johnexample@gmail.com">
+                                                placeholder="johnexample@gmail.com" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
