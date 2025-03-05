@@ -1,4 +1,13 @@
 <!-- Votre tableau -->
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <table class="table mt-3 table-striped table-responsive table-responsive-large inv-tbl" style="width:100%">
     <thead>
         <tr>
@@ -25,9 +34,8 @@
                     </button>
                 </td>
                 <td>
-                    
-                    {{ $item->options->garantie .'Jour(s)' ?? 'Non spécifiée' }}
-                
+                                        <input class="garantie-text" type="number" data-id="{{ $item->rowId }}"
+                    id="price-input-{{ $item->rowId }}" value="{{ $item->options->garantie }}" name="garantie">jour(s)
                 </td>
 
                 <td id="total_tab">{{ $item->subtotal(0, ' ', ' ') }} fr</td>
@@ -100,7 +108,10 @@
                                 <input type="text" class="form-control slug-title" id="modelProduit" name="model">
                             </div>
                         </div>
-
+                        <div class="col-md-6">
+                            <label class="form-label">Imei</label>
+                            <input type="text" class="form-control" id="price1" name="imei"> 
+                        </div>
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
                                 <label class="form-label">Prix d'achat <span>( En CFA )</span></label>

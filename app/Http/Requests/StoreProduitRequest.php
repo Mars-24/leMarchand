@@ -27,7 +27,7 @@ class StoreProduitRequest extends FormRequest
             'prix_achat' => 'required|numeric|min:0',
             'prix_vente' => 'required|numeric|min:0|gte:prix_achat',
             'prix_minimum' => 'required|numeric|min:0|lte:prix_vente',
-            'garantie' => 'required|integer|min:0|max:12',
+            'garantie' => 'required|integer|min:1',
         ];
     }
     public function messages()
@@ -52,8 +52,7 @@ class StoreProduitRequest extends FormRequest
             'prix_minimum.lte' => 'Le prix minimum doit être inférieur ou égal au prix de vente.',
             'garantie.required' => 'La durée de garantie est obligatoire.',
             'garantie.integer' => 'La durée de garantie doit être un entier.',
-            'garantie.min' => 'La garantie ne peut pas être inférieure à 0 mois.',
-            'garantie.max' => 'La garantie ne peut pas dépasser 12 mois.',
+            'garantie.min' => 'La garantie ne peut pas être inférieure à 1 jours.',
         ];
     }
 }

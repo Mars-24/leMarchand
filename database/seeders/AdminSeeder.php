@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     {
         DB::table('admins')->insertOrIgnore([
             'id'=>1,
-            'nom'=>'le marchand',
+            'nom'=>'lemarchand',
             'prenoms'=>'yannick',
             'email'=>'lemarchand228@gmail.com',
             'role'=>'admin',
@@ -24,7 +24,7 @@ class AdminSeeder extends Seeder
         ]);
         DB::table('admins')->insertOrIgnore([
             'id'=>2,
-            'nom'=>'le marchand',
+            'nom'=>'admin',
             'prenoms'=>'yannick',
             'email'=>'admin@gmail.com',
             'role'=>'otr',

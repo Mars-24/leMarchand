@@ -10,6 +10,7 @@ use App\Models\Produit;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -25,60 +26,74 @@ class OrderController extends Controller
         return view('admin.ventes.historique', compact('ventes'));
     }
 
+    public function acompte()
+    {
+        $totalRestant = Order::where('mode_achat', 'acompte')
+            ->sum(DB::raw('prix_total - acompte'));
+
+        $ventes = Order::where('mode_achat', 'acompte')->whereColumn('acompte', '<', 'prix_total')->with('client')->get();
+        // return dd($ventes);
+        return view('admin.acomptes.historique', compact('ventes', 'totalRestant'));
+    }
+
+
     public function cartStore(Request $request)
-{
-    $product_qty = $request->input('product_qty', 1); // Assurer une quantité par défaut de 1
-    $product_id = $request->input('product_id');
-    $mode_paiement = $request->input('mode_buy');
-    $product = Produit::getProduit($product_id);
-    $subCategories = SubCategory::with('categorie')->get();
+    {
+        $product_qty = $request->input('product_qty', 1); // Assurer une quantité par défaut de 1
+        $product_id = $request->input('product_id');
+        $mode_paiement = $request->input('mode_buy');
+        $product = Produit::getProduit($product_id);
+        $subCategories = SubCategory::with('categorie')->get();
 
-    // Vérifier si le produit existe déjà dans le panier
-    $cartItem = Cart::instance('facture')->search(function ($cartItem) use ($product_id) {
-        return $cartItem->id == $product_id;
-    })->first();
+        // Vérifier si le produit existe déjà dans le panier
+        $cartItem = Cart::instance('facture')->search(function ($cartItem) use ($product_id) {
+            return $cartItem->id == $product_id;
+        })->first();
 
-    if ($cartItem) {
-        // Si le produit est déjà dans le panier, on ne l'ajoute pas à nouveau
-        $response['status'] = false;
-        $response['message'] = "Ce produit est déjà ajouté à la facture.";
-        $response['total'] = Cart::subtotal();
-        $response['cart_count'] = Cart::instance('facture')->count();
-    } else {
-        // Ajouter le produit seulement s'il n'est pas dans le panier
-        $result = Cart::instance('facture')->add(
-            $product_id,
-            $product[0]['subcategory']['nom'] . ' ' . $product[0]['model'],
-            1,
-            $product[0]['prix_vente']
-        )->associate('App\Models\Produit');
-
-        // Ajouter la garantie
-        Cart::instance('facture')->update($result->rowId, ['options' => [ 'garantie' => $product[0]['garantie'] ?? "1",
-        'prix_achat' => $product[0]['prix_achat'], 'prix_minimum' => $product[0]['prix_minimum']]]);
-        if ($result) {
-            $response['status'] = true;
-            $response['message'] = "Produit ajouté à la facture.";
+        if ($cartItem) {
+            // Si le produit est déjà dans le panier, on ne l'ajoute pas à nouveau
+            $response['status'] = false;
+            $response['message'] = "Ce produit est déjà ajouté à la facture.";
             $response['total'] = Cart::subtotal();
             $response['cart_count'] = Cart::instance('facture')->count();
+        } else {
+            // Ajouter le produit seulement s'il n'est pas dans le panier
+            $result = Cart::instance('facture')->add(
+                $product_id,
+                $product[0]['subcategory']['nom'] . ' ' . $product[0]['model'],
+                1,
+                $product[0]['prix_vente']
+            )->associate('App\Models\Produit');
+
+            // Ajouter la garantie
+            Cart::instance('facture')->update($result->rowId, ['options' => [
+                'garantie' => $product[0]['garantie'] ?? "1",
+                'prix_achat' => $product[0]['prix_achat'],
+                'prix_minimum' => $product[0]['prix_minimum']
+            ]]);
+            if ($result) {
+                $response['status'] = true;
+                $response['message'] = "Produit ajouté à la facture.";
+                $response['total'] = Cart::subtotal();
+                $response['cart_count'] = Cart::instance('facture')->count();
+            }
         }
-    }
 
-    // Si la requête est en AJAX, on retourne la mise à jour de l'interface
-    if ($request->ajax()) {
-        if ($mode_paiement == 'paiement') {
-            $facture = view('admin.layouts._facture-list')->render();
-        } elseif ($mode_paiement == 'deal') {
-            $facture = view('admin.layouts._deal-facture-list', compact('subCategories'))->render();
-        } elseif ($mode_paiement == 'acompte') {
-            $facture = view('admin.layouts._acompte-list', compact('subCategories'))->render();
+        // Si la requête est en AJAX, on retourne la mise à jour de l'interface
+        if ($request->ajax()) {
+            if ($mode_paiement == 'paiement') {
+                $facture = view('admin.layouts._facture-list')->render();
+            } elseif ($mode_paiement == 'deal') {
+                $facture = view('admin.layouts._deal-facture-list', compact('subCategories'))->render();
+            } elseif ($mode_paiement == 'acompte') {
+                $facture = view('admin.layouts._acompte-list', compact('subCategories'))->render();
+            }
+
+            $response['cart'] = $facture;
         }
 
-        $response['cart'] = $facture;
+        return response()->json($response);
     }
-
-    return response()->json($response);
-}
 
     public function cartDelete(Request $request)
     {
@@ -115,11 +130,11 @@ class OrderController extends Controller
         // return dd($mode_paiement);
         $item = Cart::instance('facture')->get($rowId);
         $prix_achat = $item->options->prix_minimum ?? 0;
-        
+
         if ($price < 1) {
             $message = "Vous ne pouvez pas ajouter un produit avec un prix inferieur a 1";
             $response['status'] = false;
-        }elseif ($price < $prix_achat) {
+        } elseif ($price < $prix_achat) {
             $message = "Vous ne pouvez pas ajouter un produit avec un prix inferieur au prix minimum";
             $response['status'] = false;
         } else {
@@ -144,6 +159,8 @@ class OrderController extends Controller
         return $response;
     }
 
+
+
     public function paiementView()
     {
         return view('admin.layouts._facture-list');
@@ -154,7 +171,7 @@ class OrderController extends Controller
 
         return view('admin.layouts._deal-facture-list', compact('subCategories'));
     }
-   
+
     public function acompteView()
     {
         $subCategories = SubCategory::with('categorie')->get();
@@ -191,11 +208,18 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // return dd($request);
+        //  return dd($request);
         $products = [];
         $i = 0;
         $cart = Cart::instance('facture')->content();
-        $total = Cart::subtotal(00, '', '') - $request->input('reduction');
+
+
+        if ($request->input('mode_achat') == 'deal') {
+
+            $total = Cart::subtotal(00, '', '') - $request->input('prix_achat');
+        } else {
+            $total = Cart::subtotal(00, '', '') - $request->input('reduction');
+        }
         $status_save = false;
         // Définition des messages d'erreur personnalisés
         $messages = [
@@ -219,6 +243,15 @@ class OrderController extends Controller
             'telephone.regex' => 'Le numéro de téléphone doit être valide.',
             'produits.not_empty_json' => 'Le champ produits ne doit pas être vide.',
 
+            // Messages spécifiques à "deal"
+            'prix_achat.required' => 'Le prix d\'achat est obligatoire pour un deal.',
+            'prix_vente.required' => 'Le prix de vente est obligatoire pour un deal.',
+            'prix_minimum.required' => 'Le prix minimum est obligatoire pour un deal.',
+            'model.required' => 'Le modèle est obligatoire pour un deal.',
+            'imei.required' => 'Le numéro IMEI est obligatoire pour un deal.',
+            'imei.unique' => 'Le numéro IMEI doit être unique.',
+            'subcategory_id.required' => 'La sous-catégorie est obligatoire pour un deal.',
+            'subcategory_id.exists' => 'La sous-catégorie sélectionnée n\'existe pas.',
         ];
 
         // Construction du tableau des produits
@@ -227,7 +260,12 @@ class OrderController extends Controller
             $products['product_' . $i][] = $product->name;
             $products['product_' . $i][] = $product->price;
             $products['product_' . $i][] = $product->qty;
-            $products['product_' . $i][] = $product->options->garantie ?? 'Non spécifiée'; // Ajout de la garantie
+            if ($request->input('mode_achat') == 'deal') {
+                $products['product_' . $i][] = $request->input('garantie');
+            } else {
+                $products['product_' . $i][] = $product->options->garantie ?? 'Non spécifiée'; // Ajout de la garantie
+            }
+
             $products['product_' . $i][] = $product->options->prix_achat; // Ajout de la garantie
 
             $i++;
@@ -244,16 +282,24 @@ class OrderController extends Controller
             'email' => $request->input('email'),
             'telephone' => $request->input('phone'),
         ];
-
+        $deal_data = [
+            'prix_achat' => $request->input('prix_achat'),
+            'prix_vente' => $request->input('prix_vente'),
+            'prix_minimum' => $request->input('prix_minimum'),
+            'model' => $request->input('model'),
+            'imei' => $request->input('imei'),
+            'subcategory_id' => $request->input('subcategory_id'),
+        ];
         // Messages de validation personnalisés
         // $messages = [
         //     'produits.not_empty_json' => 'Le champ produits ne doit pas être vide.',
         // ];
 
         // Validation des données
+
         $validator = Validator::make($data, [
             'order_number' => 'required|string|unique:orders,order_number',
-            
+
             'produits' => [
                 'required',
                 'json',
@@ -264,21 +310,43 @@ class OrderController extends Controller
                     }
                 },
             ],
-            
+
             'mode_achat' => 'required|in:deal,paiement,acompte',
             'prix_total' => 'required|numeric|min:500',
-            
+
             'nom' => 'required|string|max:255',
             'prenoms' => 'nullable|string|max:255',
-            
+
             'email' => 'nullable|email|max:255',
-            
+
             'telephone' => [
                 'required',
-                'regex:/^(\+?\d{1,3}|\d{1,4})?\d{7,}$/', 
+                'regex:/^(\+?\d{1,3}|\d{1,4})?\d{7,}$/',
             ],
         ], $messages);
-        
+        if ($data['mode_achat'] == 'deal') {
+            $deal_validator = Validator::make($deal_data, [
+                'prix_achat' => 'required|numeric|min:1',
+                'prix_vente' => 'required|numeric|min:1',
+                'prix_minimum' => 'required|numeric|min:1',
+                'model' => 'required|string|max:255',
+                'imei' => 'nullable|string|max:255|unique:produits,imei',
+                'subcategory_id' => 'required|exists:sub_categories,id',
+            ], [
+                'prix_achat.required' => 'Le prix d\'achat est requis.',
+                'prix_vente.required' => 'Le prix de vente est requis.',
+                'prix_minimum.required' => 'Le prix minimum est requis.',
+                'model.required' => 'Le modèle est requis.',
+                'imei.unique' => 'Cet IMEI est déjà enregistré.',
+                'subcategory_id.exists' => 'La sous-catégorie sélectionnée est invalide.',
+            ]);
+
+            // Si la validation échoue
+            if ($deal_validator->fails()) {
+                return redirect()->route("factures.create")->withErrors($deal_validator);
+            }
+        }
+
 
 
         // Si la validation échoue
@@ -302,7 +370,7 @@ class OrderController extends Controller
             $status = $client->save();
 
             if (!$status) {
-              return back()->with('error','Erreur lors de la création du client');
+                return back()->with('error', 'Erreur lors de la création du client');
             }
 
             $clientExiste = $client;
@@ -320,28 +388,30 @@ class OrderController extends Controller
 
         // Sauvegarder la commande
         $status_save = $order->save();
-     
+
         if ($status_save) {
             // Mettre à jour le statut des produits
             if ($data['mode_achat'] == 'deal') {
+
                 $fournisseurExiste = Fournisseur::where([
                     ['nom', '=', $request->input('nom')],
                     ['prenoms', '=', $request->input('prenoms')]
                 ])->first();
                 if (!$fournisseurExiste) {
-                $fournisseur = new Fournisseur();
-                $fournisseur->nom = $request->input('nom');
-                $fournisseur->prenoms = $request->input('prenoms');
-                $fournisseur->email = $request->input('email');
-                $fournisseur->telephone = $request->input('phone');
-                $status = $fournisseur->save();
-                $fournisseurExiste=$fournisseur;
+                    $fournisseur = new Fournisseur();
+                    $fournisseur->nom = $request->input('nom');
+                    $fournisseur->prenoms = $request->input('prenoms');
+                    $fournisseur->email = $request->input('email');
+                    $fournisseur->telephone = $request->input('phone');
+                    $status = $fournisseur->save();
+                    $fournisseurExiste = $fournisseur;
                 }
                 $produit = new Produit();
                 $produit->prix_achat = $request->input('prix_achat');
                 $produit->prix_vente = $request->input('prix_vente');
                 $produit->prix_minimum = $request->input('prix_minimum');
                 $produit->model = $request->input('model');
+                $produit->imei = $request->input('imei');
                 $produit->subcategory_id = $request->input('subcategory_id');
                 $produit->fournisseur_id = $fournisseurExiste->id;
                 $produit->quantite = 1;
@@ -366,9 +436,9 @@ class OrderController extends Controller
             Cart::instance('facture')->destroy();
             // Retourner un message de succès
             return redirect()->route('factures.print', ['id' => $order->id])
-            ->with('success', 'Commande validée. Impression en cours...');        } else {
-            return back()->with('error','Erreur lors de la sauvegarde de la facture');
-
+                ->with('success', 'Commande validée. Impression en cours...');
+        } else {
+            return back()->with('error', 'Erreur lors de la sauvegarde de la facture');
         }
     }
 
@@ -394,7 +464,6 @@ class OrderController extends Controller
     {
         //
         $facture = Order::with('client')->findOrFail($id);
-
         return view('admin.ventes.print', compact('facture'));
     }
 
@@ -408,16 +477,14 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $facture)
     {
-       $facture->acompte+=$request->input('acompte');
-       $status = $facture->update();
-       if ($status) {
-        return redirect()->route('factures.print', ['id' => $facture->id])
-        ->with('success', 'Commande validée. Impression en cours...');  
-       } else {
-       return back()->with('error','Erreur lors de la mise a jour de la facture');
-       }
-       
-
+        $facture->acompte += $request->input('acompte');
+        $status = $facture->update();
+        if ($status) {
+            return redirect()->route('factures.print', ['id' => $facture->id])
+                ->with('success', 'Commande validée. Impression en cours...');
+        } else {
+            return back()->with('error', 'Erreur lors de la mise a jour de la facture');
+        }
     }
 
     /**

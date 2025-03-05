@@ -18,12 +18,21 @@
                     </span>
                 <td>{{ $item->name }} </td>
 
-                <td class="price-td">
+                <td class="price-td" style="
+                width: 27%;
+            ">
                     <input class="price-text" type="number" data-id="{{ $item->rowId }}"
-                        id="price-input-{{ $item->rowId }}" value="{{ $item->price }}" name="price"> fr
+                        id="price-input-{{ $item->rowId }}" value="{{ $item->price }}" name="price" style="
+                        width: 50%;
+                    "> fr
 
                 </td>
-                <td>{{ $item->options->garantie .'Jour(s)' ?? 'Non spécifiée' }} </td>
+                <td style="
+                width: 20%;
+            ">
+                    <input class="garantie-text facture" type="number" data-id="{{ $item->rowId }}"
+                    id="price-input-{{ $item->rowId }}" value="{{ $item->options->garantie }}" name="garantie">jour(s)
+                </td>
 
                 <td class="del-btn">{{ $item->subtotal(0, ' ', ' ') }} fr</td>
             </tr>

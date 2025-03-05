@@ -60,7 +60,7 @@
                 <div class="card card-mini dash-card card-1">
                     <div class="card-body">
                         <h2 class="mb-1">{{number_format($totalMontant,'0',',','.')}} FrCFA</h2>
-                        <p>Depenses Journaliere</p>
+                        <p>Dépenses Journalières</p>
                         <span class="mdi mdi-account-arrow-left"></span>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                 <div class="card card-mini dash-card card-1">
                     <div class="card-body">
                         <h2 class="mb-1">{{number_format($margeBruteToday,'0',',','.')}} FrCFA</h2>
-                        <p>Marge brute Journaliere</p>
+                        <p>Marge brute Journalière</p>
                         <span class="mdi mdi-account-arrow-left"></span>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                 <div class="card card-mini dash-card card-4">
                     <div class="card-body">
                         <h2 class="mb-1">{{number_format($margeNetteToday,'0',',','.')}}  FrCFA</h2>
-                        <p>Marge nette journalier</p>
+                        <p>Marge nette journalière</p>
                         <span class="mdi mdi-currency-XOF"></span>
                     </div>
                 </div>

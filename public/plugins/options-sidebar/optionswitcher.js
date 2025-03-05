@@ -11,7 +11,7 @@ $(document).ready(function () {
           <div class="slim-scroll-right-sidebar-2">
 
             <div class="right-sidebar-2-header">
-              <h2>SETTINGS</h2>
+              <h2>Paramètres</h2>
               <p>Layout Preview Settings</p>
               <div class="btn-close-right-sidebar-2">
                 <i class="mdi mdi-window-close"></i>
@@ -55,8 +55,7 @@ $(document).ready(function () {
                 <a href="javascript:void(0);" class="btn-right-sidebar-2 compact-spacing-to">Compact</a>
               </div>
               <div class="d-flex justify-content-center">
-                <div id="reset-options" style="width: auto; cursor: pointer" class="btn-right-sidebar-2 btn-reset">Reset
-                  Settings</div>
+                <div id="reset-options" style="width: auto; cursor: pointer" class="btn-right-sidebar-2 btn-reset">Réinitialiser</div>
               </div>
             </div>
           </div>
@@ -306,6 +305,8 @@ $(document).ready(function () {
     sidebar_dark.removeClass('btn-right-sidebar-2-active');
     body.removeClass('ec-sidebar-dark').addClass('ec-sidebar-light');
 
+    jQuery("#sidebar-image").attr("src", "/img/logo/light-mode-image.png");
+
     //Store in local storage
     setModule("navigationBackground", "ec-sidebar-light")
   });
@@ -321,9 +322,12 @@ $(document).ready(function () {
     sidebar_light.removeClass('btn-right-sidebar-2-active');
     body.removeClass('ec-sidebar-light').addClass('ec-sidebar-dark');
 
-    //Store in local storage
-    setModule("navigationBackground", "ec-sidebar-dark")
-  });
+    // Changer l'image
+    jQuery("#sidebar-image").attr("src", "/img/logo/dark-mode-image.png");
+
+    // Stocker dans le local storage
+    setModule("navigationBackground", "ec-sidebar-dark");
+});
 
   //Click for current options
   if (activeModule.navigationBackground === "ec-sidebar-dark") {

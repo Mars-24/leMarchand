@@ -50,16 +50,17 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="ec-vendor-upload-detail">
-                                        <form class="row g-3" action="{{route('produits.store')}}" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
-											@csrf
-											@php
-											// Regrouper les sous-catégories par category_id
-											$groupedSubCategories = $subCategories->groupBy('categorie_id');
-											@endphp
+                                        <form class="row g-3" action="{{ route('produits.store') }}" method="POST"
+                                            enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
+                                            @csrf
+                                            @php
+                                                // Regrouper les sous-catégories par category_id
+                                                $groupedSubCategories = $subCategories->groupBy('categorie_id');
+                                            @endphp
                                             <div class="col-md-6">
                                                 <label class="form-label">Select Categories</label>
                                                 <select name="subcategory_id" id="Categories" class="form-select">
-													<option value="default" disabled selected>Categorie</option>
+                                                    <option value="default" disabled selected>Categorie</option>
                                                     @foreach ($groupedSubCategories as $categoryId => $subCategories)
                                                         <optgroup label="{{ $subCategories->first()->categorie->nom }}">
                                                             <!-- Assurez-vous que category_name est disponible -->
@@ -73,99 +74,116 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
+                                                <label class="form-label">Type produit</label>
+                                                <select name="type_produit" id="type_produit" class="form-select">
+                                                    <option value="Produit simple" selected>Produit simple</option>
+                                                    <option value="produit en stock">Produit en stock</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label for="inputEmail4" class="form-label">Model Produit</label>
-                                                <input type="text" class="form-control slug-title" id="inputEmail4" name="model">
+                                                <input type="text" class="form-control slug-title" id="inputEmail4"
+                                                    name="model">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Imei</label>
-                                                <input type="text" class="form-control" id="price1" name="imei"> 
+                                                <input type="text" class="form-control" id="price1" name="imei">
                                             </div>
-											<div class="col-md-6">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Prix d'achat <span>( En CFA
                                                         )</span></label>
-                                                <input type="number" class="form-control" id="price1" name="prix_achat"> 
+                                                <input type="number" class="form-control" id="price1" name="prix_achat">
                                             </div>
-											<div class="col-md-6">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Prix de vente <span>( En CFA
                                                         )</span></label>
                                                 <input type="number" class="form-control" id="price2" name="prix_vente">
-                                            </div>            
-											<div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label class="form-label">Prix minimuin de vente <span>( En CFA
                                                         )</span></label>
-                                                <input type="number" class="form-control" id="price3" name="prix_minimum">
+                                                <input type="number" class="form-control" id="price3"
+                                                    name="prix_minimum">
                                             </div>
-											<div class="col-md-6">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Stock</label>
+                                                <input type="number" class="form-control" id="stock"
+                                                    name="stock">
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label class="form-label">Garantie <span>(En jours)</span> </label>
-                                                <input type="number" class="form-control" id="garantie1" name="garantie" max="12"/>
+                                                <input type="number" class="form-control" id="garantie1" name="garantie" />
                                             </div>
-											<div class="col-md-6">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Fournisseur</label>
-                                                <select name="fournisseur_id" id="Fournisseur" class="form-select" onchange="checkFournisseur(this.value)">
-													<option value="default" disabled selected>Nom fournisseur</option>
+                                                <select name="fournisseur_id" id="Fournisseur" class="form-select"
+                                                    onchange="checkFournisseur(this.value)">
+                                                    <option value="default" disabled selected>Nom fournisseur</option>
                                                     @foreach ($fournisseurs as $fournisseur)
-                                                                <option value="{{ $fournisseur->id }}">
-                                                                    {{ $fournisseur->nom }}</option>
+                                                        <option value="{{ $fournisseur->id }}">
+                                                            {{ $fournisseur->nom }}</option>
                                                     @endforeach
-													<option value="absent">Nouveau Fournisseur</option>
+                                                    <option value="absent">Nouveau Fournisseur</option>
                                                 </select>
                                             </div>
-											<div class="row" id="newFournisseurDiv" style="display: none;">
-													<div class="form-group row mb-6">
-														<label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">
-															Image Fournisseur</label>
-					
-														<div class="col-sm-8 col-lg-10">
-															<div class="custom-file mb-1">
-																<input type="file" name="photo" class="custom-file-input"
-																	id="coverImage">
-																<label class="custom-file-label" for="coverImage">Choisir fichier...
-																</label>
-					
-															</div>
-														</div>
-													</div>
-					
-													<div class="row mb-2">
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="firstName">Nom Fournisseur</label>
-																<input type="text" name="nom" class="form-control" id="firstName"
-																	placeholder="John">
-															</div>
-														</div>
-					
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="lastName">Prenoms Fournisseur</label>
-																<input type="text" name="prenoms" class="form-control" id="lastName"
-																	placeholder="Deo">
-															</div>
-														</div>
-					
-														<div class="col-lg-6">
-															<div class="form-group mb-4">
-																<label for="userName">Telephone Fournisseur</label>
-																<input type="text" class="form-control" name="telephone" id="userName"
-																	placeholder=" 92000000">
-															</div>
-														</div>
-					
-														<div class="col-lg-6">
-															<div class="form-group mb-4">
-																<label for="email">Email Fournisseur</label>
-																<input type="email" name="email" class="form-control" id="email"
-																	placeholder="johnexample@gmail.com">
-															</div>
-														</div>
-													</div>
-												
-											</div>
+                                            <div class="row" id="newFournisseurDiv" style="display: none;">
+                                                <div class="form-group row mb-6">
+                                                    <label for="coverImage" class="col-sm-4 col-lg-2 col-form-label">
+                                                        Image Fournisseur</label>
+
+                                                    <div class="col-sm-8 col-lg-10">
+                                                        <div class="custom-file mb-1">
+                                                            <input type="file" name="photo"
+                                                                class="custom-file-input" id="coverImage">
+                                                            <label class="custom-file-label" for="coverImage">Choisir
+                                                                fichier...
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="firstName">Nom Fournisseur</label>
+                                                            <input type="text" name="nom" class="form-control"
+                                                                id="firstName" placeholder="John">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="lastName">Prenoms Fournisseur</label>
+                                                            <input type="text" name="prenoms" class="form-control"
+                                                                id="lastName" placeholder="Deo">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group mb-4">
+                                                            <label for="userName">Telephone Fournisseur</label>
+                                                            <input type="text" class="form-control" name="telephone"
+                                                                id="userName" placeholder=" 92000000">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group mb-4">
+                                                            <label for="email">Email Fournisseur</label>
+                                                            <input type="email" name="email" class="form-control"
+                                                                id="email" placeholder="johnexample@gmail.com">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                             <div class="col-md-12">
                                                 <button type="submit" class="btn btn-primary">Enregistrer</button>
                                             </div>
-											 <!-- Hidden input to hold the image file -->
-											 <input type="file" name="file" id="hiddenImageInput" style="display: none;">
+                                            <!-- Hidden input to hold the image file -->
+                                            <input type="file" name="file" id="hiddenImageInput"
+                                                style="display: none;">
                                         </form>
                                     </div>
                                 </div>
@@ -178,21 +196,22 @@
     </div> <!-- End Content Wrapper -->
 @endsection
 @section('script')
-<script>
-	function checkFournisseur(value) {
-		var newFournisseurDiv = document.getElementById('newFournisseurDiv');
-		if (value === 'absent') {
-			newFournisseurDiv.style.display = 'block';
-		} else {
-			newFournisseurDiv.style.display = 'none';
-		}
-	}
-	function handleFormSubmit(event) {
+    <script>
+        function checkFournisseur(value) {
+            var newFournisseurDiv = document.getElementById('newFournisseurDiv');
+            if (value === 'absent') {
+                newFournisseurDiv.style.display = 'block';
+            } else {
+                newFournisseurDiv.style.display = 'none';
+            }
+        }
+
+        function handleFormSubmit(event) {
             var imageUpload = document.getElementById('imageUpload');
             var hiddenImageInput = document.getElementById('hiddenImageInput');
             if (imageUpload.files.length > 0) {
                 hiddenImageInput.files = imageUpload.files;
             }
         }
-</script>
+    </script>
 @endsection

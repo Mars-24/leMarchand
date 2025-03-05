@@ -71,7 +71,27 @@
                                 {{ number_format($produit[2], '0', ',', '.') }} FR
 
                             </td>
-                            <td>{{ $produit[3] }} semaine(s)</td>
+                            <td>
+                                
+                                @php
+                                $jours = $produit[4];
+                                $annees = floor($jours / 365);
+                                $mois = floor(($jours % 365) / 30);
+                                $restantJours = $jours % 30;
+                            @endphp
+                        
+                            @if ($annees > 0)
+                                {{ $annees }} an{{ $annees > 1 ? 's' : '' }}
+                            @endif
+                        
+                            @if ($mois > 0)
+                                {{ $mois }} mois
+                            @endif
+                        
+                            @if ($restantJours > 0 || ($annees == 0 && $mois == 0))
+                                {{ $restantJours }} jour{{ $restantJours > 1 ? 's' : '' }}
+                            @endif
+                            </td>
 
                         </tr>
                     @endforeach

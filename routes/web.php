@@ -55,8 +55,10 @@ Route::group(['prefix' => 'admin', 'middleware' => [Admin::class]], function () 
 
 
     Route::get('/factures/print/{id}', [\App\Http\Controllers\OrderController::class, 'print'])->name('factures.print');
+    Route::get('/factures/acompte', [\App\Http\Controllers\OrderController::class,'acompte'])->name('acompte');
 
     Route::resource('/factures', \App\Http\Controllers\OrderController::class);
+
     Route::post('/factures/add', [\App\Http\Controllers\OrderController::class, 'cartStore'])->name('cart.store');
     Route::post('/factures/delete', [\App\Http\Controllers\OrderController::class, 'cartDelete'])->name('cart.delete');
 

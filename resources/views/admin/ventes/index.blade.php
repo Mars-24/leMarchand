@@ -45,21 +45,22 @@
                                         <tbody>
                                             @foreach ($produits as $produit)
                                                 <tr>
-                                                
-                                            <td>{{ $produit->subcategory->nom }}</td>
-                                            <td>{{ $produit->model }}</td>
-                                            <td>{{ $produit->prix_vente }} fr</td>
-                                            <td>{{ $produit->prix_minimum }} fr</td>
 
-                                            <td>
-                                                <div class="btn-group mb-1">
-                                                    <button type="button" class="btn btn-outline-success add_to_cart"
-                                                        data-quantity="1" data-produit-id="{{ $produit->id }} "
-                                                        id="add_to_cart{{ $produit->id }}">Ajouter</button>
+                                                    <td>{{ $produit->subcategory->nom }}</td>
+                                                    <td>{{ $produit->model }}</td>
+                                                    <td>{{ $produit->prix_vente }} fr</td>
+                                                    <td>{{ $produit->prix_minimum }} fr</td>
 
-                                                </div>
-                                            </td>
-                                            </tr>
+                                                    <td>
+                                                        <div class="btn-group mb-1">
+                                                            <button type="button"
+                                                                class="btn btn-outline-success add_to_cart"
+                                                                data-quantity="1" data-produit-id="{{ $produit->id }} "
+                                                                id="add_to_cart{{ $produit->id }}">Ajouter</button>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -152,7 +153,7 @@
                 </div>
             </form>
         </div> <!-- End Content -->
-    
+
     </div> <!-- End Content Wrapper -->
     <style>
         .price-text,
@@ -168,7 +169,22 @@
             font-size: 16px;
             /* Taille du texte (ajustez selon vos besoins) */
             /*width: 100%;
-                                                    /* Ajuste la largeur selon vos besoins */
+                                                        /* Ajuste la largeur selon vos besoins */
+        }
+
+        .garantie-text {
+            background-color: transparent;
+            /* Rend l'arrière-plan transparent */
+            border: none;
+            /* Supprime la bordure */
+            outline: none;
+            /* Supprime la bordure lors de la mise au point (focus) */
+            color: #000;
+            /* Couleur du texte (ajustez-la si nécessaire) */
+            font-size: 16px;
+            /* Taille du texte (ajustez selon vos besoins) */
+            width: 16%;
+            /* Ajuste la largeur selon vos besoins */
         }
 
         .fac {
@@ -204,7 +220,7 @@
         }
 
         /* Styles d'impression */
-       
+
 
 
 
@@ -284,6 +300,9 @@
             font-size: 10px;
             color: #888;
         }
+        .facture{
+            width: 33%;
+        }
     </style>
 @endsection
 @section('script')
@@ -308,30 +327,8 @@
             $('#modal-add-contact').modal('hide');
         });
         $(document).on('change', '#prixachat', function(e) {
-            // Récupérer la valeur de la réduction
             e.preventDefault();
-            // var initialTotal = {{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal(0, '', '') }};
 
-            // var reduction = parseInt($(this).val()) || 0;
-            // console.log('reduction ', reduction);
-            // console.log('init ', initialTotal);
-
-            // if (reduction > initialTotal) {
-            //     swal({
-            //         title: 'Erreur',
-            //         text: 'Le prix du produit a dealer doit depasser le prix du produit',
-            //         icon: 'error',
-            //         button: 'OK'
-            //     });
-            //     return false;
-            // } else {
-            //     // Calculer le nouveau total
-            //     let newTotal = initialTotal - reduction;
-            //     // // Mettre à jour le total affiché
-            //     $('#total').text(newTotal.toLocaleString('fr-FR') + ' fr');
-            //     $('#total_partiel').text(newTotal.toLocaleString('fr-FR') + ' fr');
-            //     $('#total_tab').text(newTotal.toLocaleString('fr-FR') + ' fr');
-            // }
             var reduction = parseInt($(this).val()) || 0;
             console.log('valeur de la reduction ', reduction);
 

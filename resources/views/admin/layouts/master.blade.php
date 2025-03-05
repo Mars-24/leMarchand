@@ -47,11 +47,7 @@
                 @if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin')
                     <div class="ec-brand">
                         <a href="{{ route('admin.dashboard') }}" title="Ekka">
-                            <picture>
-                                <source srcset="{{ asset('img/logo/logo.webp') }} 1x" type="image/webp" />
-                                <img class="ec-brand-icon" src="{{ asset('img/logo/logo.png') }}" alt="" />
-
-                            </picture>
+                                <img id="sidebar-image" class="ec-brand-icon" src="{{ asset('img/logo/light-mode-image.png') }}" alt="" />
                         </a>
                     </div>
                     @elseif (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'otr')
@@ -147,7 +143,7 @@
 
                                 <!-- Category -->
                                 <li
-                                    class="has-sub  {{ request()->routeIs('categories.index') || request()->routeIs('admin.categorie.subCategory') ? 'active' : '' }}">
+                                    class="has-sub  {{ request()->routeIs('categories.index') || request()->routeIs('admin.categorie.subCategory') || request()->routeIs('subCategory.edit') ? 'active' : '' }}">
                                     <a class="sidenav-item-link" href="javascript:void(0)">
                                         <i class="mdi mdi-dns-outline"></i>
                                         <span class="nav-text">Categories</span> <b class="caret"></b>
@@ -162,7 +158,7 @@
                                             <li class="">
                                                 <a class="sidenav-item-link"
                                                     href="{{ route('admin.categorie.subCategory') }}">
-                                                    <span class="nav-text">Sous Categorie</span>
+                                                    <span class="nav-text">Marques</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -215,6 +211,22 @@
                                 </ul>
                             </div>
                         </li>
+                        <li
+                        class="has-sub {{ request()->routeIs('acompte')? 'active' : '' }}">
+                        <a class="sidenav-item-link" href="javascript:void(0)">
+                            <i class="mdi mdi-cart"></i>
+                            <span class="nav-text">Acompte</span> <b class="caret"></b>
+                        </a>
+                        <div class="collapse">
+                            <ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
+                                <li class="">
+                                    <a class="sidenav-item-link" href="{{ route('acompte') }}">
+                                        <span class="nav-text">Historique</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                         <li class="has-sub {{ request()->routeIs('defectueux.index') ? 'active' : '' }}">
                             <a class="sidenav-item-link" href="javascript:void(0)">
                                 <i class="mdi mdi-cash"></i>
@@ -254,7 +266,7 @@
                                 </ul>
                             </div>
                         </li>
-@endif
+                        @endif
                         <!-- Depences-->
                         {{-- <div class="i-mdi:cash-remove w-1em h-1em"></div> --}}
                         <li

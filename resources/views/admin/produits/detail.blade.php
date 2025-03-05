@@ -56,12 +56,13 @@
                                                     @php
                                                         $barcode = new \Milon\Barcode\DNS1D();
                                                     @endphp
+                                                    <p class="produit-name">{{ $produit->subcategory->nom }} {{ $produit->model }}</p>
                                                     <img src="data:image/png;base64,{{ $barcode->getBarcodePNG($produit->code_bar, 'C128') }}"
                                                         alt="barcode" />
                                                 </p>
                                             </div>
                                             <div class="ec-ofr">
-                                                <h6>Prix & détails du téléphone :</h6>
+                                                <h6>Prix & détails du téléphone :</h6>5
                                                 <ul>
                                                     <li><b>Prix minimum :</b> {{ $produit->prix_minimum }} CFA </li>
                                                     <li><b>Prix de vente :</b> {{ $produit->prix_vente }} CFA</li>
@@ -137,6 +138,9 @@
         </div> <!-- End Content -->
     </div> <!-- End Content Wrapper -->
     <style>
+        .produit-name{
+            display: none;
+        }
         @media print {
             body * {
                 visibility: hidden;
@@ -152,6 +156,9 @@
                 text-align: center;
                 /* margin: 60px; */
             }
+            .produit-name{
+            display: block;
+        }
         }
     </style>
     
